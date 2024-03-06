@@ -1,0 +1,81 @@
+.pass-main-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.container-password {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    padding: 15px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+}
+
+.pic-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.forgot-form {
+    width: 300px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.inp-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.forgot-img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.forgot-label {
+    color: #333333;
+    font-weight: bold;
+}
+
+.forgot-input {
+    background-color: #f5f5f5;
+    border: 0;
+    outline: 0;
+    height: 32px;
+    border-radius: 5px;
+    padding: 8px;
+    color: #333333;
+}
+
+.forgot-input:hover,
+.forgot-input:focus {
+    background-color: #f2f0f0;
+}
+
+.forgot-input.error {
+    border: 2px solid #d63d3d;
+}
+
+.change-pass-btn {
+    color: #fff;
+    font-size: large;
+    background-color:teal;
+    border: 0;
+    outline: 0;
+    width: 100%;
+    padding: 4px 0px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.1s;
+}
