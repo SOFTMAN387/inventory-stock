@@ -1,4 +1,4 @@
-import { Avatar, Space, Table, Typography,Button } from "antd";
+import { Avatar, Space, Table, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { getCustomers } from "../../Api/ApiData";
 import { useNavigate} from "react-router-dom";

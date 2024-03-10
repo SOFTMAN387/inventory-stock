@@ -7,7 +7,7 @@ import {
   Placeholder,
   useTheme,
 } from "@aws-amplify/ui-react";
-import { MdRemoveRedEye, MdWeb, MdPermIdentity, MdRateReview, MdShoppingCartCheckout } from "react-icons/md";
+import { MdWeb, MdPermIdentity, MdRateReview, MdShoppingCartCheckout, MdNotStarted, MdOutlineRemoveShoppingCart } from "react-icons/md";
 
 import MiniStatistics from "./MiniStatistics";
 import TrafficSources from "./TrafficSources";
@@ -110,6 +110,13 @@ const Dashboard = () => {
               title="Products"
               amount="23,762"
               icon={<MdShoppingCartCheckout />}
+            />
+          </View>
+          <View rowSpan={{ base: 1, large: 1 }}>
+            <MiniStatistics
+              title="Out Stock"
+              amount="11"
+              icon={<MdOutlineRemoveShoppingCart />}
             />
           </View>
           <View rowSpan={{ base: 1, large: 1 }}>
