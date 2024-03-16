@@ -58,7 +58,7 @@ export const createUser = async(req, res) => {
 
       //Generating Json Web Token==================
       const token = jwt.sign({ id:user._id }, process.env.JWT_TOKEN_KEY);
-      const expiryDate = new Date(Date.now() + 3600000*120); // 1 hour*24hours*5days*
+      const expiryDate = new Date(Date.now() + 3600000*24); // 1 hour*24hours*5days*
        //send response
       res
         .cookie('access_token', token, { httpOnly: true, expires: expiryDate })

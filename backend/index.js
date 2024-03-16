@@ -1,6 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import userRoutes from './routes/user.route.js';
+import productRoutes from './routes/product.route.js';
+import orderRoutes from './routes/order.route.js';
 // import authRoutes from './routes/auth.route.js';
 import cookieParser from 'cookie-parser';
 import connectDB from './mongoDB/connect.js';
@@ -29,6 +31,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api/user', userRoutes);
+app.use('/api/product', productRoutes);
+app.use('/api/order', orderRoutes);
 // app.use('/api/auth', authRoutes);
 
 app.get("/",(req,res)=>{
