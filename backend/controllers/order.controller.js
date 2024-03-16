@@ -10,27 +10,27 @@ export const test = (req, res) => {
 //create Order
 
 export const createOrder = async(req, res) => {
-    const {OrderImage,title,price,quantity,rating,category,sub_category,description}=req.body;
-    if(!OrderImage|!title|!price|!quantity|!rating|!category|!sub_category|!description){
+    const {userOrderData,shippingAddress,billingAddress,paymentMode,paidToken,totalAmount,userId,userOrderStatus}=req.body;
+    if(!userOrderData|!shippingAddress|!billingAddress|!paymentMode|!paidToken|!totalAmount|!userId|!userOrderStatus){
         res.status(400).json("Every field must required!...");
     }
     try {
 
         //create new Order
         const newOrder =new Order({
-          OrderImage: req.body.OrderImage,
-          title: req.body.title,
-          price: req.body.price,
-          quantity: req.body.quantity,
-          rating: req.body.rating,
-          category: req.body.category,
-          sub_category:req.body.sub_category,
-          description: req.body.description
+          userOrderData: req.body.userOrderData,
+          shippingAddress: req.body.shippingAddress,
+          billingAddress: req.body.billingAddress,
+          paymentMode: req.body.paymentMode,
+          paidToken: req.body.paidToken,
+          totalAmount: req.body.totalAmount,
+          userId:req.body.userId,
+          userOrderStatus: req.body.userOrderStatus
         });
     
         //save Order and respond
-        const Order = await newOrder.save();
-        res.status(200).json(Order);
+        const order = await newOrder.save();
+        res.status(200).json({msg:"Order created Successful",order});
       } catch (err) {
         console.log(err);
         res.status(500).json(err);
@@ -42,8 +42,8 @@ export const createOrder = async(req, res) => {
 export const updateOrder = async (req, res) => {
   try {
     if(req.params.id){
-      const Order = await Order.findByIdAndUpdate({_id:req.params.id},{$set:req.body},{new:true});
-      res.status(200).json({msg:"Order Updated Successful",Order});
+      const order = await Order.findByIdAndUpdate({_id:req.params.id},{$set:req.body},{new:true});
+      res.status(200).json({msg:"Order Updated Successful",order});
   }
    
   } catch (error) {

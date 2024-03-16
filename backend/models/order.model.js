@@ -18,12 +18,13 @@ const OrderSchema = new mongoose.Schema(
         type:String,
         required:true,
     },
-    token: {
+    paidToken: {
         type:Object,
-        required: true,
+        required:true,
       },
     totalAmount: {
       type: Number,
+      required:true
     },
     userId:{
         type:String,
