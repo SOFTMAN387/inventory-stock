@@ -1,7 +1,30 @@
-import React from 'react'
+import React,{ useState } from 'react';
 import { View, ScrollView } from "@aws-amplify/ui-react";
+import uploadImageToCloudinary from '../../utils/uploadImage';
 // import MUIRichTextEditor from 'mui-rte'
 const AddProduct = () => {
+  const [selectedFile,setFile]=useState(null);
+  // const [formData,setFormData]=useState({
+  //   name:'',
+  //   email:"",
+  //   password:'',
+  //   photo:null,
+  //   gender:'',
+  //   bloodType:'',
+  // });
+
+
+  const handleFileInputChang=async(e)=>{
+    const file=e.target.files[0];
+    const data=await uploadImageToCloudinary(file);
+    if(data){
+      setFile(data.url);
+    }
+  
+    // setFormData({...formData,photo:data.url})
+    console.log(data);
+  }
+
   return (
    <>
     <View
@@ -17,12 +40,13 @@ const AddProduct = () => {
   <div className="p-8 rounded border border-gray-200">
   <h1 className="font-medium text-xl">Add New Product</h1>
   <br/>
-        <div>
+        <div className='w-full'>
             <label for="product-img" className="text-sm text-gray-700 block mb-1 font-medium">Product Image</label>
-            <input type="file" name="name" id="product-img" className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-auto" placeholder="Choose Image" />
+            <input type="file"  onChange={handleFileInputChang}
+             name='photo' accept='.jpg, .png' id="product-img" className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-auto" placeholder="Choose Image" />
           </div>
-       <div className="max-w-sm rounded overflow-hidden shadow-lg">
-      <img className="w-full" src="/logo1.png" alt="Product Image" />
+       <div className="max-w-sm rounded overflow-hidden shadow-lg"><br/>
+      <img className="w-full" src={`${selectedFile===null?"https://tse1.mm.bing.net/th?id=OIP.F4eiZn0Wjgp4EFtocph2BAAAAA&pid=Api&P=0&h=180":selectedFile}`} alt="Product_thumnail" />
     </div>
     <div className="mt-8 grid lg:grid-cols-2 gap-4">
       <div>

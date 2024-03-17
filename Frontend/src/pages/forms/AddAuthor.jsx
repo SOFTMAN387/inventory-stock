@@ -1,6 +1,27 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { View} from "@aws-amplify/ui-react";
+import uploadImageToCloudinary from '../../utils/uploadImage';
 const AddAuthor = () => {
+  const [selectedFile,setFile]=useState(null);
+  // const [formData,setFormData]=useState({
+  //   name:'',
+  //   email:"",
+  //   password:'',
+  //   photo:null,
+  //   gender:'',
+  //   bloodType:'',
+  // });
+
+  const handleFileInputChang=async(e)=>{
+    const file=e.target.files[0];
+    const data=await uploadImageToCloudinary(file);
+    if(data){
+      setFile(data.url);
+    }
+  
+    // setFormData({...formData,photo:data.url})
+    console.log(data);
+  }
   return (
   <>
    <View
@@ -12,13 +33,15 @@ const AddAuthor = () => {
       > <br></br>
     <h3 className='text-xl font-bold'>Add New Author</h3>
     <br/>
-    <div>
-       <label for="author-img" className="text-sm text-gray-700 block mb-1 font-medium">Author Image</label>
-            <input type="file" name="name" id="author-img" className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-auto" placeholder="Choose Image" />
+    <div className='w-full'>
+            <label for="author-img" className="text-sm text-gray-700 block mb-1 font-medium">Author Image</label>
+            <input type="file"  onChange={handleFileInputChang}
+             name='photo' accept='.jpg, .png' id="author-img" className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-auto" placeholder="Choose Image" />
           </div>
-       <div className="max-w-sm rounded overflow-hidden shadow-lg">
-      <img className="w-full" src="/logo1.png" alt="profile-img" />
-    </div><br/>
+       <div className="max-w-sm rounded overflow-hidden shadow-lg"><br/>
+      <img className="w-full" src={`${selectedFile===null?"https://tse1.mm.bing.net/th?id=OIP.F4eiZn0Wjgp4EFtocph2BAAAAA&pid=Api&P=0&h=180":selectedFile}`} alt="Product_thumnail" />
+    </div>
+    <br/>
   <form className="w-full max-w-lg">
   <div className="flex flex-wrap -mx-3 mb-6">
   <div className="w-full md:w-1/2 px-3">

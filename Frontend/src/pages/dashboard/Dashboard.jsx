@@ -7,7 +7,7 @@ import {
   Placeholder,
   useTheme,
 } from "@aws-amplify/ui-react";
-import { MdWeb, MdPermIdentity, MdRateReview, MdShoppingCartCheckout, MdNotStarted, MdOutlineRemoveShoppingCart } from "react-icons/md";
+import { MdWeb, MdPermIdentity, MdRateReview, MdShoppingCartCheckout, MdOutlineRemoveShoppingCart } from "react-icons/md";
 
 import MiniStatistics from "./MiniStatistics";
 import TrafficSources from "./TrafficSources";
