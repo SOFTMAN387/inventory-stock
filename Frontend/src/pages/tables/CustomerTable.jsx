@@ -1,8 +1,10 @@
 import { Avatar, Space, Table, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { getCustomers } from "../../Api/ApiData";
+// import useFetchData from "../../hooks/useFetchData";
 
 function CustomersTable() {
+  // const {error,data,setLoader}=useFetchData("https://dummyjson.com/users");
   const [loading, setLoading] = useState(false);
   const [customers, setCustomers] = useState([]);
 
