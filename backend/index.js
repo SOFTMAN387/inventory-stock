@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cloudinary from "cloudinary"
 import userRoutes from './routes/user.route.js';
 import productRoutes from './routes/product.route.js';
 import orderRoutes from './routes/order.route.js';
@@ -8,6 +9,12 @@ import cookieParser from 'cookie-parser';
 import connectDB from './mongoDB/connect.js';
 // import path from 'path';
 dotenv.config();
+          
+cloudinary.config({ 
+  cloud_name:process.env.CLOUDINAYR_NAME, 
+  api_key:process.env.CLOUDINARY_API_KEY, 
+  api_secret:process.env.CLOUDINARY_API_SECRET 
+});
 const port=8000;
 
 const app = express();

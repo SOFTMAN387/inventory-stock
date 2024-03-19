@@ -1,4 +1,5 @@
 import Order from "../models/order.model.js";
+import cloudinary from "cloudinary";
 // import { errorHandler } from '../middleware/error.js';
 
 export const test = (req, res) => {
@@ -42,6 +43,11 @@ export const createOrder = async(req, res) => {
 export const updateOrder = async (req, res) => {
   try {
     if(req.params.id){
+     //Finding and updating cloudinary image========================
+    const findOrderImg=await Order.findById(req.params.id);
+    const imgPublicId=findOrderImg?.OrderImage?.public_id;
+    await cloudinary.v2.uploader.destroy(imgPublicId, function(error,result) {
+    res.status(200).json({msg:error,result}); }); 
       const order = await Order.findByIdAndUpdate({_id:req.params.id},{$set:req.body},{new:true});
       res.status(200).json({msg:"Order Updated Successful",order});
   }
@@ -83,6 +89,11 @@ export const getOrder=async(req,res)=>{
 // delete Order========================
 export const deleteOrder = async (req, res, next) => {
   try {
+    //Finding and deleting cloudinary image========================
+    const findOrderImg=await Order.findById(req.params.id);
+    const imgPublicId=findOrderImg?.OrderImage?.public_id;
+    await cloudinary.v2.uploader.destroy(imgPublicId, function(error,result) {
+    res.status(200).json({msg:error,result}); }); 
    const delOrder= await Order.findByIdAndDelete({_id:req.params.id},{new:true});
     res.status(200).json({msg:'Order has been deleted...',delOrder});
   } catch (error) {

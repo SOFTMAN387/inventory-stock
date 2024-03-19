@@ -1,4 +1,6 @@
 import Product from "../models/product.model.js";
+import cloudinary from 'cloudinary';
+
 // import { errorHandler } from '../middleware/error.js';
 
 export const test = (req, res) => {
@@ -42,8 +44,13 @@ export const createProduct = async(req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     if(req.params.id){
-      const product = await Product.findByIdAndUpdate({_id:req.params.id},{$set:req.body},{new:true});
-      res.status(200).json({msg:"Product Updated Successful",product});
+    //Finding and updating cloudinary image========================
+    const findProductImg=await Product.findById(req.params.id);
+    const imgPublicId=findProductImg?.productImage?.public_id;
+    await cloudinary.v2.uploader.destroy(imgPublicId, function(error,result) {
+    res.status(200).json({msg:error,result}); }); 
+    const product = await Product.findByIdAndUpdate({_id:req.params.id},{$set:req.body},{new:true});
+    res.status(200).json({msg:"Product Updated Successful",product});
   }
    
   } catch (error) {
@@ -83,8 +90,14 @@ export const getProduct=async(req,res)=>{
 // delete Product========================
 export const deleteProduct = async (req, res, next) => {
   try {
-   const delProduct= await Product.findByIdAndDelete({_id:req.params.id},{new:true});
+    //Finding and Deleting cloudinary image========================
+    const findProductImg=await Product.findById(req.params.id);
+    const imgPublicId=findProductImg?.productImage?.public_id;
+   await cloudinary.v2.uploader.destroy(imgPublicId, function(error,result) {
+    res.status(200).json({msg:error,result}); }); 
+    const delProduct= await Product.findByIdAndDelete({_id:req.params.id},{new:true});
     res.status(200).json({msg:'Product has been deleted...',delProduct});
+
   } catch (error) {
     next(error);
   }

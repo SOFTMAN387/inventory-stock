@@ -1,4 +1,5 @@
 import User from '../models/user.model.js';
+import cloudinary from "cloudinary";
 // import { errorHandler } from '../middleware/error.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
@@ -76,6 +77,11 @@ export const createUser = async(req, res) => {
 export const updateUser = async (req, res) => {
   try {
     if(req.params.id){
+        //Finding and updating cloudinary image========================
+     const findUserImg=await User.findById(req.params.id);
+     const imgPublicId=findUserImg?.UserImage?.public_id;
+     await cloudinary.v2.uploader.destroy(imgPublicId, function(error,result) {
+     res.status(200).json({msg:error,result}); }); 
       const user = await User.findByIdAndUpdate({_id:req.params.id},{$set:req.body},{new:true});
       res.status(200).json({msg:"User Updated Successful",user});
   }
@@ -154,7 +160,12 @@ export const getUser=async(req,res)=>{
 // delete user========================
 export const deleteUser = async (req, res, next) => {
   try {
-   const delUser= await User.findByIdAndDelete({_id:req.params.id},{new:true});
+     //Finding and deleting cloudinary image========================
+     const findUserImg=await User.findById(req.params.id);
+     const imgPublicId=findUserImg?.UserImage?.public_id;
+     await cloudinary.v2.uploader.destroy(imgPublicId, function(error,result) {
+     res.status(200).json({msg:error,result}); }); 
+    const delUser= await User.findByIdAndDelete({_id:req.params.id},{new:true});
     res.status(200).json({msg:'User has been deleted...',delUser});
   } catch (error) {
     next(error);

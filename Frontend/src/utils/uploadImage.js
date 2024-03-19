@@ -8,6 +8,7 @@ const uploadImageToCloudinary=async(file)=>{
     uploadData.append('file',file);
     uploadData.append('upload_preset',upload_preset);
     uploadData.append('cloud_name',cloud_name);
+    uploadData.append('folder',"inventory-img");
 
     const res=await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,{
         method:"post",

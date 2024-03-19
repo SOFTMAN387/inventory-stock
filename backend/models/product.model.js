@@ -3,32 +3,33 @@ import mongoose from "mongoose";
 const ProductSchema = new mongoose.Schema(
   {
     productImage: {
-        type: String,
+        type: Object,
+        required:true,
         default:'https://tse4.mm.bing.net/th?id=OIP._7NaWYCqwXvv9uvQJ5SwzQHaHI&pid=Api&P=0&h=180'
       },
     title: {
       type: String,
-      require: true
+      required: true
     },
     price: {
         type:Number,
-        require: true
+        required: true
     },
     quantity: {
         type:Number,
-        require: true
+        required: true
     },
      rating: {
         type:Number,
-        require: true
+        required: true
     },
     category: {
         type: String,
-        require: true
+        required: true
     },
-    subcategory: {
+    sub_category: {
         type: String,
-        require: true
+        required: true
     },
     description: {
       type: String,

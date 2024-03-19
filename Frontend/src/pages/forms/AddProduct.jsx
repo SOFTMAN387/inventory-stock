@@ -22,6 +22,7 @@ const AddProduct = () => {
     }
   
     // setFormData({...formData,photo:data.url})
+    // inventory-img/mppuyjyq3gwtumwk5n82
     console.log(data);
   }
 
