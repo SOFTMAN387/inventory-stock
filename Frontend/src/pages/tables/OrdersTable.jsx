@@ -1,17 +1,11 @@
-import { Space, Table, Typography,Avatar, Button } from 'antd';
-import React,{useState,useEffect} from 'react';
-import { getOrders } from '../../Api/ApiData';
+import { Space, Table, Typography, Button } from 'antd';
 import { View, ScrollView } from "@aws-amplify/ui-react";
+import useFetchData from '../../hooks/useFetchData';
+import { useNavigate} from "react-router-dom";
 const OrdersTable = () => {
-  const [loading,setLoading]=useState(true);
-  const [orders,setOrders]=useState([]);
-  useEffect(()=>{
-    getOrders().then(res=>{
-  setOrders(res?.products);
-  setLoading(false);
-})
-  },[]);
-
+  const navigate=useNavigate();
+  const {resultData,loader,error}=useFetchData('api/order/orderlist');
+  const allOrders=resultData?.findAllOrders;
 
   return (
    <>
@@ -27,32 +21,42 @@ const OrdersTable = () => {
     <Space size={20} direction="vertical">
       <Typography.Title level={4}>Recent Orders</Typography.Title>
       <Table
-        loading={loading}
+        loading={loader}
         columns={[
           {
-            title: "Thumbnail",
-            dataIndex: "thumbnail",
-            render: (link) => {
-              return <Avatar src={link} />;
-            },
+            title: "#ID",
+            dataIndex: "_id"
           },
           {
-            title: "Price",
-            dataIndex: "price",
-            render: (value) => <span>${value}</span>,
-          },
-          {
-            title: "DiscountedPrice",
-            dataIndex: "discountedPrice",
-            render: (value) => <span>${value}</span>,
-          },
-          {
-            title: "Quantity",
-            dataIndex: "quantity",
+            title: "User ID",
+            dataIndex: "userId",
+            render: (value) => <span>{value?.slice(-5)}</span>,
           },
           {
             title: "Total",
-            dataIndex: "total",
+            dataIndex: "totalAmount",
+            render: (value) => <span>Rs/-{value}</span>,
+          },
+          {
+            title: "Payment",
+            dataIndex: "paymentMode",
+            render: (value) => <span>{value}</span>,
+          },
+          {
+            title: "paidToken",
+            dataIndex: "paidToken",
+            render: (value) => <span>#ID{value?.paidId?.slice(-5)}</span>,
+          },
+          {
+            title: "upi ID",
+            dataIndex: "paidToken",
+            render: (value) => <span>#ID{value?.upiId?.slice(-5)}</span>,
+          },
+          {
+            title: "Dettails",
+            render: () => {
+              return <Button className="action-btn-edit" onClick={() => navigate("/admin/product-view")}>View</Button>;
+            },
           },
           {
             title: "Status",
@@ -63,6 +67,7 @@ const OrdersTable = () => {
             </>)
            }
           },
+        
           {
             title: "DELETE",
             render:()=>{
@@ -70,11 +75,12 @@ const OrdersTable = () => {
            }
           },
         ]}
-        dataSource={orders}
+        dataSource={allOrders}
         pagination={{
           pageSize: 4,
         }}
       ></Table>
+      {error&& <span>{error}</span>}
     </Space>
     </ScrollView>
       </View>

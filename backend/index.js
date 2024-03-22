@@ -4,6 +4,7 @@ import cloudinary from "cloudinary"
 import userRoutes from './routes/user.route.js';
 import productRoutes from './routes/product.route.js';
 import orderRoutes from './routes/order.route.js';
+import cors from "cors";
 // import authRoutes from './routes/auth.route.js';
 import cookieParser from 'cookie-parser';
 import connectDB from './mongoDB/connect.js';
@@ -18,6 +19,11 @@ cloudinary.config({
 const port=8000;
 
 const app = express();
+
+const corsOptons={
+  origin:true,
+};
+app.use(cors(corsOptons));
 
 //Deployment Code starts in productions=====================
 

@@ -3,10 +3,12 @@ import { BASE_URL } from '../config';
 // import { useSelector } from "react-redux/es/hooks/useSelector";
 
 const useFetchData = (url) => {
+    console.log(BASE_URL,url)
     // const userToken=useSelector((state)=>state.currentUser[0].token);
-    const [data,setData]=useState();
+    const [resultData,setData]=useState();
     const [error,setError]=useState(false);
     const [loader,setloader]=useState(false);
+    console.log(resultData);
     useEffect(()=>{
         const fetchData=async()=>{
             try {
@@ -34,7 +36,7 @@ const useFetchData = (url) => {
         fetchData();
     },[url])
  
-    return {data,loader,error}
+    return {resultData,loader,error}
 }
 
 export default useFetchData;

@@ -14,8 +14,8 @@ const router = express.Router();
 
 //users routes starts here============================
 router.get('/', test);
-router.get('/userlist',verifyToken,getAllUsers);
-router.get('/:id',verifyToken,getUser);
+router.get('/userlist',getAllUsers);
+router.get('/:id',getUser);
 router.post('/login',loginUser);
 router.post('/register',verifyToken,createUser);
 router.patch('/update/:id',verifyToken, updateUser);

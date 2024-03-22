@@ -1,10 +1,10 @@
-# Amplify UI Dashboard
+# softman UI Dashboard
 
-A React Dashboard Admin Template built on top of Amplify UI.
+A React Dashboard Admin Template built on top of softman UI.
 
-Live Demo: [https://amplify-ui-dashboard-demo.vercel.app/](https://amplify-ui-dashboard-demo.vercel.app/).
+Live Demo: [https://softman-ui-dashboard-demo.vercel.app/](https://softman-ui-dashboard-demo.vercel.app/).
 
-Amplify UI Docs: [https://ui.docs.amplify.aws/react/getting-started/introduction](https://ui.docs.amplify.aws/react/getting-started/introduction).
+softman UI Docs: [https://ui.docs.softman.aws/react/getting-started/introduction](https://ui.docs.softman.aws/react/getting-started/introduction).
 
 ![preview](./preview.png)
 
@@ -15,7 +15,7 @@ Fork this repo to your namespace and clone it to your local machine.
 Clone:
 
 ```
-git clone https://github.com/<YOUR NAME>/amplify-ui-dashboard.git
+git clone https://github.com/<YOUR NAME>/softman-ui-dashboard.git
 ```
 
 install dependencies:
@@ -44,8 +44,8 @@ Routes are in App.jsx
 
 ### Theming: /src/theme.jsx
 
-To extend or override a token of the default amplify-ui theme, change the theme file.\
-Amplify UI Docs: [https://ui.docs.amplify.aws/react/theming](https://ui.docs.amplify.aws/react/theming).
+To extend or override a token of the default softman-ui theme, change the theme file.\
+softman UI Docs: [https://ui.docs.softman.aws/react/theming](https://ui.docs.softman.aws/react/theming).
 
 ## Available Scripts
 

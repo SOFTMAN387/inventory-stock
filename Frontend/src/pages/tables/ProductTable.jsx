@@ -1,9 +1,9 @@
-import React,{useState,useEffect} from 'react';
-import { getInventory } from '../../Api/ApiData';
+import React,{useState} from 'react';
+// import { getInventory } from '../../Api/ApiData';
 import "./table.css";
 import { View, Heading, ScrollView ,Menu, MenuButton } from "@aws-amplify/ui-react";
-
 import { Space, Table,Avatar,Rate, Button } from 'antd';
+import useFetchData from "../../hooks/useFetchData";
 // import { mockSongsData } from "../../data/mock";
 
 import { useNavigate} from "react-router-dom";
@@ -12,14 +12,18 @@ import { MdArrowDropDown } from 'react-icons/md';
 
 
 const BasicTable = () => {
+  const {resultData,loader,error}=useFetchData('api/product/productlist');
+  const allProducts=resultData?.findAllProducts;
+  console.log(allProducts);
   // const data = mockSongsData(10);
-  const [loading,setLoading]=useState(true);
-  const [products,setProducts]=useState([]);
+  // const [loading,setLoading]=useState(true);
+  // const [products,setProducts]=useState([]);
+  
   const [outStockProducts,setOutStockProducts]=useState([]);
   const outStock=()=>{
     try {
-      const outStock=products.filter((item)=>{
-        return item.stock<=10;
+      const outStock=allProducts.filter((item)=>{
+        return item.quantity===0;
       });
 
       setOutStockProducts(outStock);
@@ -41,13 +45,13 @@ const BasicTable = () => {
       alert("Faild to Delete");
     }
   }
-  useEffect(()=>{
-    getInventory().then(res=>{
+  // useEffect(()=>{
+  //   getInventory().then(res=>{
     
-    setProducts(res?.products);
-    setLoading(false);
-  })
-    },[]);
+  //   setProducts(res?.products);
+  //   setLoading(false);
+  // })
+  //   },[]);
 
   return (
     <>
@@ -80,7 +84,7 @@ const BasicTable = () => {
     <ScrollView width="100%">
         <Space size={20} direction="vertical">
       <Table
-        loading={loading}
+        loading={loader}
         columns={[
           {
             title: "Thumbnail",
@@ -96,7 +100,7 @@ const BasicTable = () => {
           {
             title: "Price",
             dataIndex: "price",
-            render: (value) => <span>${value}</span>,
+            render: (value) => <span>Rs/-{value}</span>,
           },
           {
             title: "Rating",
@@ -107,12 +111,12 @@ const BasicTable = () => {
           },
           {
             title: "Stock",
-            dataIndex: "stock",
+            dataIndex: "quantity",
           },
 
           {
             title: "Brand",
-            dataIndex: "brand",
+            dataIndex: "sub_category",
           },
           {
             title: "Category",
@@ -137,12 +141,12 @@ const BasicTable = () => {
           },
         ]}
         
-        dataSource={outStockProducts.length>0?outStockProducts:products}
+        dataSource={outStockProducts.length>0?outStockProducts:allProducts}
         pagination={{
           pageSize: 5,
         }}
       ></Table>
-
+      {error&&<span>{error}</span>}
     </Space>
    </ScrollView>
       </View>

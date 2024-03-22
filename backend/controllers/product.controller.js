@@ -67,7 +67,7 @@ export const getAllProducts=async(req,res)=>{
     !findAllProducts && res.status(400).json("Not Found!...");
     res.status(200).json({msg:"Product Found Successful",findAllProducts});
   } catch (error) {
-    res.status(500).json(err);
+    res.status(500).json(error);
   }
 }
 

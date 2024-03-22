@@ -1,21 +1,11 @@
 import { Avatar, Space, Table, Typography } from "antd";
-import { useEffect, useState } from "react";
-import { getCustomers } from "../../Api/ApiData";
 import { useNavigate} from "react-router-dom";
 import { View, Heading, ScrollView } from "@aws-amplify/ui-react";
-
+import useFetchData from "../../hooks/useFetchData";
 function AuthorTable() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [customers, setCustomers] = useState([]);
-
-  useEffect(() => {
-    setLoading(true);
-    getCustomers().then((res) => {
-      setCustomers(res.users);
-      setLoading(false);
-    });
-  }, []);
+  const {resultData,loader,error}=useFetchData('api/user/userlist');
+  const allUsers=resultData?.findAllUsers;
 
   return (<>
      <View
@@ -38,7 +28,7 @@ function AuthorTable() {
     <Space size={20} direction="vertical">
       <Typography.Title level={4}>Customers</Typography.Title>
       <Table
-        loading={loading}
+        loading={loader}
         columns={[
           {
             title: "Photo",
@@ -49,11 +39,11 @@ function AuthorTable() {
           },
           {
             title: "First Name",
-            dataIndex: "firstName",
+            dataIndex: "firstname",
           },
           {
             title: "LastName",
-            dataIndex: "lastName",
+            dataIndex: "lastname",
           },
           {
             title: "Email",
@@ -61,26 +51,20 @@ function AuthorTable() {
           },
           {
             title: "Phone",
-            dataIndex: "phone",
+            dataIndex: "mobile",
           },
 
           {
-            title: "address",
-            dataIndex: "address",
-            render: (address) => {
-              return (
-                <span>
-                  {address.address}, {address.city}
-                </span>
-              );
-            },
+            title: "Role",
+            dataIndex: "role",
           },
         ]}
-        dataSource={customers}
+        dataSource={allUsers}
         pagination={{
           pageSize: 5,
         }}
       ></Table>
+      {error&&<span>{error}</span>}
     </Space>
     </ScrollView>
     </View>

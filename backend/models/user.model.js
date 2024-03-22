@@ -18,10 +18,10 @@ const UserSchema = new mongoose.Schema(
         type:Number,
         required: true
       },
-    profile: {
-        type: String,
-        default:'Frontend'
-      },
+    // profile: {
+    //     type: String,
+    //     default:'Frontend'
+    //   },
     role: {
         type: String,
         default:'user'

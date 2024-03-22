@@ -1,26 +1,14 @@
 import { Avatar, Space, Table, Typography } from "antd";
-import { useEffect, useState } from "react";
-import { getCustomers } from "../../Api/ApiData";
-// import useFetchData from "../../hooks/useFetchData";
+import useFetchData from "../../hooks/useFetchData";
 
 function CustomersTable() {
-  // const {error,data,setLoader}=useFetchData("https://dummyjson.com/users");
-  const [loading, setLoading] = useState(false);
-  const [customers, setCustomers] = useState([]);
-
-  useEffect(() => {
-    setLoading(true);
-    getCustomers().then((res) => {
-      setCustomers(res.users);
-      setLoading(false);
-    });
-  }, []);
-
+  const {resultData,loader,error}=useFetchData('api/user/userlist');
+  const allUsers=resultData?.findAllUsers;
   return (
     <Space size={20} direction="vertical">
       <Typography.Title level={4}>Customers</Typography.Title>
       <Table
-        loading={loading}
+        loading={loader}
         columns={[
           {
             title: "Photo",
@@ -31,11 +19,11 @@ function CustomersTable() {
           },
           {
             title: "First Name",
-            dataIndex: "firstName",
+            dataIndex: "firstname",
           },
           {
             title: "LastName",
-            dataIndex: "lastName",
+            dataIndex: "lastname",
           },
           {
             title: "Email",
@@ -43,26 +31,15 @@ function CustomersTable() {
           },
           {
             title: "Phone",
-            dataIndex: "phone",
-          },
-
-          {
-            title: "address",
-            dataIndex: "address",
-            render: (address) => {
-              return (
-                <span>
-                  {address.address}, {address.city}
-                </span>
-              );
-            },
+            dataIndex: "mobile",
           },
         ]}
-        dataSource={customers}
+        dataSource={allUsers}
         pagination={{
           pageSize: 10,
         }}
       ></Table>
+      {error&&<span>{error}</span>}
     </Space>
   );
 }
