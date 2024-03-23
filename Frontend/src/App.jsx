@@ -17,10 +17,12 @@ import AddProduct from "./pages/forms/AddProduct";
 import Forgot from "./components/ForgotPassword/Forgot";
 import NewPassword from "./components/ForgotPassword/SetNewPassword/NewPassword";
 import EditAuthor from "./pages/forms/EditAuthor";
+import { useSelector } from 'react-redux';
+
 
 
 export default function App() {
-  const user=true;
+  const authUser= useSelector((state) => state?.currentUser[0]?.user) || [];
   return (
     <ThemeProvider theme={theme}>
       <div>
@@ -28,7 +30,7 @@ export default function App() {
             parent route paths, and nested route elements render inside
             parent route elements. See the note about <Outlet> below. */}
         <Routes>
-          {user===true?
+          {authUser?.role?
              <Route path="/" element={<Layout />}>
              <Route index element={<Dashboard />} />
              <Route path="/admin/add-product" element={<AddProduct />} />

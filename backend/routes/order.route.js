@@ -7,16 +7,16 @@ import {
   deleteOrder,
   createOrder
 } from '../controllers/order.controller.js';
-import { verifyToken } from '../middleware/verifyUser.js';
+import { verifyToken,isAdmin } from '../middleware/verifyUser.js';
 const router = express.Router();
 
 //Orders routes starts here============================
 router.get('/test', test);
-router.get('/orderlist',getAllOrders);
+router.get('/orderlist',verifyToken,getAllOrders);
 router.get('/:id',verifyToken,getOrder);
 router.post('/new-order',verifyToken,createOrder);
 router.patch('/update/:id',verifyToken,updateOrder);
-router.delete('/delete/:id', verifyToken, deleteOrder);
+router.delete('/delete/:id', verifyToken,isAdmin,deleteOrder);
 //Orders routes ends here============================
 
 

@@ -4,6 +4,12 @@ import cloudinary from "cloudinary";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
+const genToken=user=>{
+  return jwt.sign({id:user._id,role:user.role},process.env.JWT_TOKEN_KEY,{
+      expiresIn:"2d",
+  })
+}
+
 export const test = (req, res) => {
   res.json({
     message: 'API is working!',
@@ -48,26 +54,36 @@ export const createUser = async(req, res) => {
     try {
       //find user
       const user = await User.findOne({ email:req.body.email });
-      !user && res.status(400).json("Wrong email or password");
+      if(!user){
+       return res.status(400).json({msg:"Wrong email or password"});
+      }
+       
   
       //validate password=========================
       const validPassword = await bcrypt.compare(
         req.body.password,
         user.password
       );
-      !validPassword && res.status(400).json("Wrong Email or password");
+      if(!validPassword){
+        return res.status(400).json({msg:"Wrong email or password"});
+
+      }
 
       //Generating Json Web Token==================
-      const token = jwt.sign({ id:user._id }, process.env.JWT_TOKEN_KEY);
-      const expiryDate = new Date(Date.now() + 3600000*24); // 1 hour*24hours*5days*
+      const token=genToken(user);
+      const {password,...rest}=user._doc
+      return res.status(200).json({status:true,msg:"Successfully LogedIn..",token,user:{...rest}});
+
+      // const token = jwt.sign({ id:user._id }, process.env.JWT_TOKEN_KEY);
+      // const expiryDate = new Date(Date.now() + 3600000*24); 
        //send response
-      res
-        .cookie('access_token', token, { httpOnly: true, expires: expiryDate })
-        .status(200)
-        .json({msg:"Loged In Successful",user});
+      // return res
+      //   .cookie('access_token', token, { httpOnly: true, expires: expiryDate })
+      //   .status(200)
+      //   .json({msg:"Loged In Successful",user});
 
     } catch (err) {
-      res.status(500).json(err);
+    return  res.status(500).json({status:false,msg:"Login Failed!.."});
     }
 
   }

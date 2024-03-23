@@ -1,10 +1,9 @@
 import { useState,useEffect } from 'react';
 import { BASE_URL } from '../config';
-// import { useSelector } from "react-redux/es/hooks/useSelector";
+import { useSelector } from 'react-redux';
 
 const useFetchData = (url) => {
-    console.log(BASE_URL,url)
-    // const userToken=useSelector((state)=>state.currentUser[0].token);
+    const userToken=useSelector((state)=>state?.currentUser[0]?.token);
     const [resultData,setData]=useState();
     const [error,setError]=useState(false);
     const [loader,setloader]=useState(false);
@@ -14,11 +13,11 @@ const useFetchData = (url) => {
             try {
                 setloader(true);
                 const res=await fetch(`${BASE_URL}/${url}`
-                // ,{
-                //  headers:{
-                //         Authorization:`Bearer ${userToken}`
-                //     }
-                // }
+                ,{
+                 headers:{
+                        Authorization:`Bearer ${userToken}`
+                    }
+                }
                 )
                 const result= await res.json();
                 if(!res.ok){
@@ -34,7 +33,7 @@ const useFetchData = (url) => {
             }
         }
         fetchData();
-    },[url])
+    },[url,userToken])
  
     return {resultData,loader,error}
 }
