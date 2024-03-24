@@ -4,17 +4,19 @@ import "./table.css";
 import { View, Heading, ScrollView ,Menu, MenuButton } from "@aws-amplify/ui-react";
 import { Space, Table,Avatar,Rate, Button } from 'antd';
 import useFetchData from "../../hooks/useFetchData";
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 // import { mockSongsData } from "../../data/mock";
 
-import { useNavigate} from "react-router-dom";
 import { MdArrowDropDown } from 'react-icons/md';
-
-
+import axios from 'axios';
+import { BASE_URL } from '../../config';
 
 const BasicTable = () => {
+  const navigate=useNavigate();
+  const userToken=useSelector((state)=>state?.currentUser[0]?.token);
   const {resultData,loader,error}=useFetchData('api/product/productlist');
   const allProducts=resultData?.findAllProducts;
-  console.log(allProducts);
   // const data = mockSongsData(10);
   // const [loading,setLoading]=useState(true);
   // const [products,setProducts]=useState([]);
@@ -34,24 +36,26 @@ const BasicTable = () => {
   }
   
 
-  
-  const navigate = useNavigate();
-  const DeleteProduct=(id)=>{
-    try {
-      if(id){
-        alert(`Id ${id} Deleted`);
+  const DeleteProduct=async(id)=>{
+    if(id){
+      try {
+        const delProduct= await axios.delete(`${BASE_URL}/api/product/delete/${id}`, {
+            headers:{
+                  Authorization:`Bearer ${userToken}`
+              }
+          })  
+          if(delProduct){
+            alert("Product Deleted Successfull!");
+
+          }
+      
+      } catch (error) {
+        alert("You are't Authorized!...");
       }
-    } catch (error) {
-      alert("Faild to Delete");
     }
+   
   }
-  // useEffect(()=>{
-  //   getInventory().then(res=>{
-    
-  //   setProducts(res?.products);
-  //   setLoading(false);
-  // })
-  //   },[]);
+
 
   return (
     <>
@@ -88,9 +92,9 @@ const BasicTable = () => {
         columns={[
           {
             title: "Thumbnail",
-            dataIndex: "thumbnail",
-            render: (link) => {
-              return <Avatar src={link} />;
+            dataIndex: "productImage",
+            render: (val) => {
+              return <Avatar src={val.url} />;
             },
           },
           {
@@ -128,15 +132,17 @@ const BasicTable = () => {
           },
           {
             title: "Edit",
-            render: () => {
-              return <Button className="action-btn-edit" onClick={() => navigate("/admin/edit-product")}>Edit</Button>;
+            dataIndex: "_id",
+            render: (id) => {
+              return <Button className="action-btn-edit" onClick={() => navigate(`/admin/edit-product/${id}`)}>Edit</Button>;
             },
           },
           {
             
             title: "Delete",
-            render: () => {
-              return <Button style={{backgroundColor:"red",color:"white"}} onClick={()=>DeleteProduct(123)}>Delete</Button>;
+            dataIndex: "_id",
+            render: (id) => {
+              return <Button style={{backgroundColor:"red",color:"white"}} onClick={()=>DeleteProduct(id)}>Delete</Button>;
             },
           },
         ]}

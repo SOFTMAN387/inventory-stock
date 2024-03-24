@@ -16,7 +16,7 @@ router.get('/productlist',verifyToken,getAllProducts);
 router.get('/:id',verifyToken,getProduct);
 router.post('/new-product',verifyToken,createProduct);
 router.patch('/update/:id',verifyToken,updateProduct);
-router.delete('/delete/:id', verifyToken,isAdmin, deleteProduct);
+router.delete('/delete/:id', verifyToken,isAdmin,deleteProduct);
 //Products routes ends here============================
 
 

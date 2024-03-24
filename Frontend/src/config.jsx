@@ -1,6 +1,5 @@
 import React from "react";
 import { Icon } from "@aws-amplify/ui-react";
-
 import {
   MdDashboard,
   MdAccountBox,

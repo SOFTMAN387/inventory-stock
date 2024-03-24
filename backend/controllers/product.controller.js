@@ -14,7 +14,7 @@ export const test = (req, res) => {
 export const createProduct = async(req, res) => {
     const {productImage,title,price,quantity,rating,category,sub_category,description}=req.body;
     if(!productImage|!title|!price|!quantity|!rating|!category|!sub_category|!description){
-        res.status(400).json("Every field must required!...");
+       return res.status(400).json("Every field must required!...");
     }
     try {
 
@@ -32,10 +32,10 @@ export const createProduct = async(req, res) => {
     
         //save Product and respond
         const product = await newProduct.save();
-        res.status(200).json(product);
+       return res.status(200).json(product);
       } catch (err) {
         console.log(err);
-        res.status(500).json(err);
+      return res.status(500).json(err);
       }
   };
 
@@ -92,11 +92,12 @@ export const deleteProduct = async (req, res, next) => {
   try {
     //Finding and Deleting cloudinary image========================
     const findProductImg=await Product.findById(req.params.id);
-    const imgPublicId=findProductImg?.productImage?.public_id;
-   await cloudinary.v2.uploader.destroy(imgPublicId, function(error,result) {
-    res.status(200).json({msg:error,result}); }); 
-    const delProduct= await Product.findByIdAndDelete({_id:req.params.id},{new:true});
-    res.status(200).json({msg:'Product has been deleted...',delProduct});
+   const imgPublicId=findProductImg?.productImage?.public_id;
+    await cloudinary.v2.uploader.destroy(imgPublicId, function(error,result) {
+   res.status(200).json({msg:error,result}); }); 
+
+   const delProduct= await Product.findByIdAndDelete({_id:req.params.id},{new:true});
+   return res.status(200).json({msg:'Product has been deleted...',delProduct});
 
   } catch (error) {
     next(error);

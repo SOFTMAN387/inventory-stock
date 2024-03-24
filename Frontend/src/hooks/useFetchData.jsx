@@ -1,5 +1,5 @@
 import { useState,useEffect } from 'react';
-import { BASE_URL } from '../config';
+import { BASE_URL} from '../config';
 import { useSelector } from 'react-redux';
 
 const useFetchData = (url) => {
