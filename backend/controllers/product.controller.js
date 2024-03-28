@@ -48,13 +48,13 @@ export const updateProduct = async (req, res) => {
     const findProductImg=await Product.findById(req.params.id);
     const imgPublicId=findProductImg?.productImage?.public_id;
     await cloudinary.v2.uploader.destroy(imgPublicId, function(error,result) {
-    res.status(200).json({msg:error,result}); }); 
+   res.status(200).json({msg:error,result}); }); 
     const product = await Product.findByIdAndUpdate({_id:req.params.id},{$set:req.body},{new:true});
-    res.status(200).json({msg:"Product Updated Successful",product});
+   return res.status(200).json({msg:"Product Updated Successful",product});
   }
    
   } catch (error) {
-    res.status(500).json(error);
+   return res.status(500).json(error);
   }
 };
 
@@ -96,8 +96,8 @@ export const deleteProduct = async (req, res, next) => {
     await cloudinary.v2.uploader.destroy(imgPublicId, function(error,result) {
    res.status(200).json({msg:error,result}); }); 
 
-   const delProduct= await Product.findByIdAndDelete({_id:req.params.id},{new:true});
-   return res.status(200).json({msg:'Product has been deleted...',delProduct});
+   await Product.findByIdAndDelete({_id:req.params.id},{new:true});
+   res.status(200).json({msg:'Product has been deleted...'});
 
   } catch (error) {
     next(error);

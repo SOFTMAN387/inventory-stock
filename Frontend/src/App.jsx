@@ -22,7 +22,7 @@ import { useSelector } from 'react-redux';
 
 
 export default function App() {
-  const authUser= useSelector((state) => state?.currentUser[0]?.user) || [];
+  const authUser= useSelector((state) => state?.currentUser[0]) || [];
  
   return (
     <ThemeProvider theme={theme}>
@@ -31,7 +31,7 @@ export default function App() {
             parent route paths, and nested route elements render inside
             parent route elements. See the note about <Outlet> below. */}
         <Routes>
-          {authUser?.role?
+          {authUser?.token?
              <Route path="/" element={<Layout />}>
              <Route index element={<Dashboard />} />
              <Route path="/admin/add-product" element={<AddProduct />} />

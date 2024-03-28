@@ -17,10 +17,7 @@ const BasicTable = () => {
   const userToken=useSelector((state)=>state?.currentUser[0]?.token);
   const {resultData,loader,error}=useFetchData('api/product/productlist');
   const allProducts=resultData?.findAllProducts;
-  // const data = mockSongsData(10);
-  // const [loading,setLoading]=useState(true);
-  // const [products,setProducts]=useState([]);
-  
+  console.log(allProducts);
   const [outStockProducts,setOutStockProducts]=useState([]);
   const outStock=()=>{
     try {
@@ -45,17 +42,15 @@ const BasicTable = () => {
               }
           })  
           if(delProduct){
-            alert("Product Deleted Successfull!");
-
+            alert("Product Deleted Successfull!...");
+          
           }
-      
       } catch (error) {
         alert("You are't Authorized!...");
       }
     }
    
   }
-
 
   return (
     <>
