@@ -82,8 +82,8 @@ export const appNavs = [
   {
     eventKey: "profile",
     icon: <Icon as={MdAccountBox} />,
-    title: "Profile",
-    to: "/profile",
+    title: "Settings",
+    to: "/settings",
   },
 ];
 

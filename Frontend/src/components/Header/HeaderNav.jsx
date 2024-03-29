@@ -24,12 +24,12 @@ const HeaderNav = () => {
         trigger={
           <MenuButton variation="menu">
             <div className="header-avatar">
-              <img alt="avatar" src={authUser?.profilePicture}></img>
+              <img alt="avatar" src={authUser?.profilePicture?.url}></img>
             </div>
           </MenuButton>
         }
       >
-        <MenuItem onClick={() => navigate("/profile")}>Profile</MenuItem>
+        <MenuItem onClick={() => navigate(`/profile/${authUser?._id}`)}>Profile</MenuItem>
         <MenuItem>Settings</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>

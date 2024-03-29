@@ -30,8 +30,8 @@ export const createUser = async(req, res) => {
     
         //create new user
         const newUser = new User({
-          firstname: req.body.firstname,
-          lastname: req.body.lastname,
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,
           mobile: req.body.mobile,
           profile: req.body.profile,
           role: req.body.role,
@@ -42,10 +42,10 @@ export const createUser = async(req, res) => {
     
         //save user and respond
         const user = await newUser.save();
-        res.status(200).json(user);
+        return res.status(200).json(user);
       } catch (err) {
         console.log(err);
-        res.status(500).json(err);
+       return res.status(500).json(err);
       }
   };
 
@@ -129,6 +129,19 @@ export const updateUser = async (req, res) => {
   }
 };
 
+
+export const updateAdminRole=async(req,res)=>{
+  try {
+    if(req.params.id){
+    const user = await User.findByIdAndUpdate({_id:req.params.id},{$set:req.body},{new:true});
+    return res.status(200).json({msg:"Role Updated Successful",user});
+    }
+  } catch (error) {
+   return res.status(500).json(error);
+  }
+}
+
+
 export const forgotPassword=async(req,res)=>{
   try {
     if(req.params.id){
@@ -168,7 +181,7 @@ export const getUser=async(req,res)=>{
     !findUser && res.status(400).json("Not Found!...");
     res.status(200).json({msg:"User Found Successful",findUser});
   } catch (error) {
-    res.status(500).json(err);
+    res.status(500).json(error);
   }
 }
 
@@ -178,11 +191,11 @@ export const deleteUser = async (req, res, next) => {
   try {
      //Finding and deleting cloudinary image========================
      const findUserImg=await User.findById(req.params.id);
-     const imgPublicId=findUserImg?.UserImage?.public_id;
+     const imgPublicId=findUserImg?.profilePicture?.public_id;
      await cloudinary.v2.uploader.destroy(imgPublicId, function(error,result) {
-     res.status(200).json({msg:error,result}); }); 
+    return res.status(200).json({msg:error,result}); }); 
     const delUser= await User.findByIdAndDelete({_id:req.params.id},{new:true});
-    res.status(200).json({msg:'User has been deleted...',delUser});
+   return res.status(200).json({msg:'User has been deleted...',delUser});
   } catch (error) {
     next(error);
   }

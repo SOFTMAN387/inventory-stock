@@ -2,13 +2,13 @@ import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema(
   {
-    firstname: {
+    first_name: {
       type: String,
       required: true,
       min: 3,
       max: 20
     },
-    lastname: {
+    last_name: {
         type: String,
         required: true,
         min: 3,
@@ -18,10 +18,10 @@ const UserSchema = new mongoose.Schema(
         type:Number,
         required: true
       },
-    // profile: {
-    //     type: String,
-    //     default:'Frontend'
-    //   },
+    profile: {
+        type: String,
+        default:'Frontend'
+      },
     role: {
         type: String,
         default:'user'
@@ -38,8 +38,8 @@ const UserSchema = new mongoose.Schema(
       min: 6
     },
     profilePicture: {
-        type: String,
-        default:'https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg'
+        type: Object,
+       required:true,
       },
   },
   { timestamps: true }

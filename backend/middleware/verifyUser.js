@@ -50,8 +50,8 @@ export const isAdmin=async(req,res,next)=>{
     //     return res.status(401).json({success:false,message:"You are not authorized.."});
 
     // }
-    if(req.role==="user"){
-        return res.status(401).json({success:false,msg:"You are not authorized.."});
+    if(req.role==="Admin"){
+        return res.status(401).json({success:false,msg:"Only, Super Admins are Authorized..."});
     }
 
     next();

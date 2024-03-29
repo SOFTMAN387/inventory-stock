@@ -1,20 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
 import { View, Flex, useTheme,Text,SwitchField,Button } from "@aws-amplify/ui-react";
-import "./Profile.css";
-import useFetchData from "../../hooks/useFetchData";
-const Profile = () => {
-  const id=useParams().id;
+import "../profile/Profile.css";
+import { useSelector } from "react-redux";
+const Setting = () => {
   // const id="65ed7bada708ba186741f4af";
-  const {resultData,error}=useFetchData(`api/user/${id}`);
-
-  console.log(resultData);
+  const authUser= useSelector((state) => state?.currentUser[0]?.user) || [];
   const { tokens } = useTheme();
   return (
     <>
       <div>
-        <h2>Profile</h2>
+        <h2>Settings</h2>
       </div>
       <View maxWidth="100%" padding="0rem" minHeight="100vh">
         <Flex
@@ -34,13 +30,13 @@ const Profile = () => {
         alignItems="flex-start"
       >
         <div className="profile-header-image">
-          <img alt="avatar" src={resultData?.findUser[0]?.profilePicture?.url}></img>
+          <img alt="avatar" src={authUser?.profilePicture?.url}></img>
         </div>
         <div className="profile-header-text">
           <Text variation="primary" fontWeight={600} fontSize="18px">
-            {resultData?.findUser[0]?.first_name}  {resultData?.findUser[0]?.last_name}
+            {authUser?.first_name}  {authUser?.last_name}
           </Text>
-          <Text variation="tertiary">{resultData?.findUser[0]?.email}</Text>
+          <Text variation="tertiary">{authUser?.email}</Text>
         </div>
       </Flex>
           </View>
@@ -65,19 +61,19 @@ const Profile = () => {
         <Text variation="tertiary" fontWeight="600">
           Full Name:
         </Text>
-        <Text variation="tertiary">{resultData?.findUser[0]?.firstname}  {resultData?.findUser[0]?.lastname}</Text>
+        <Text variation="tertiary">{authUser?.firstname}  {authUser?.lastname}</Text>
       </Flex>
       <Flex>
         <Text variation="tertiary" fontWeight="600">
           Phone:
         </Text>
-        <Text variation="tertiary">{resultData?.findUser[0]?.mobile}</Text>
+        <Text variation="tertiary">{authUser?.mobile}</Text>
       </Flex>
       <Flex>
         <Text variation="tertiary" fontWeight="600">
           Email:
         </Text>
-        <Text variation="tertiary">{resultData?.findUser[0]?.email} </Text>
+        <Text variation="tertiary">{authUser?.email} </Text>
       </Flex>
       <Flex>
         <Text variation="tertiary" fontWeight="600">
@@ -86,7 +82,7 @@ const Profile = () => {
         <Text variation="tertiary">United States</Text>
       </Flex>
       <div className="profile-card-edit">
-        <Link to={`/admin/edit-profile/${resultData?.findUser[0]?._id}`}> <Button marginLeft="auto">Edit</Button></Link>
+        <Link to={`/admin/edit-profile/${authUser?._id}`}> <Button marginLeft="auto">Edit</Button></Link>
        
       </div>
     </div>
@@ -117,10 +113,9 @@ const Profile = () => {
     </div>
           </View>
         </Flex>
-        {error&&<span>{error}</span>}
       </View>
     </>
   );
 };
 
-export default Profile;
+export default Setting;

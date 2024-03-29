@@ -17,6 +17,7 @@ import AddProduct from "./pages/forms/AddProduct";
 import Forgot from "./components/ForgotPassword/Forgot";
 import NewPassword from "./components/ForgotPassword/SetNewPassword/NewPassword";
 import EditAuthor from "./pages/forms/EditAuthor";
+import Setting from "./pages/setting/settings";
 import { useSelector } from 'react-redux';
 
 
@@ -44,7 +45,8 @@ export default function App() {
              <Route path="/admin/author" element={<AuthorTable />} />
             
              {/* <Route path="users-table" element={<UsersTable />} /> */}
-             <Route path="/profile" element={<Profile />} />
+             <Route path="/profile/:id" element={<Profile />} />
+             <Route path="/settings" element={<Setting />} />
  
              {/* Using path="*"" means "match anything", so this route
                  acts like a catch-all for URLs that we don't have explicit

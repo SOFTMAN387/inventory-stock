@@ -25,6 +25,39 @@ const AddProduct = () => {
     description:"",
   });
 
+  
+  const categoryList = [
+    {
+        id: 1,
+        value: 'Mens'
+    }, {
+        id: 2,
+        value: 'Womens'
+    }, {
+        id: 3,
+        value: 'Kids'
+    }, {
+        id: 4,
+        value: 'Books'
+    },
+    {
+        id: 5,
+        value: 'Fashion'
+    },
+    {
+      id: 6,
+      value: 'Electronics'
+  },
+      {
+        id: 7,
+        value: 'Sports'
+    },
+    {
+      id: 8,
+      value: 'Home & Kitchen'
+    },
+    ];
+
   const handleFileInputChang=async(e)=>{
     const file=e.target.files[0];
     const data=await uploadImageToCloudinary(file);
@@ -113,14 +146,9 @@ console.log(productData);
     <div>
     <label for="category" className="text-sm text-gray-700 block mb-1 font-medium">Category</label>
     <select onChange={handleInputChange} id="category" name='category' className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block  focus:border-blue-500 text-gray-700 w-auto">
-      <option selected>Mens</option>
-      <option>Womens</option>
-      <option>Kids</option>
-      <option>Books</option>
-      <option>Fashion</option>
-      <option>Electronics</option>
-      <option>Sports</option>
-      <option>Home & Kitchen</option>
+    {categoryList.map((item)=>{
+        return(<><option key={item.id} onChange={handleInputChange} value={item.value}>{item.value}</option></>)
+      })}
     </select>
       
     </div><br/>
