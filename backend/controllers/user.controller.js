@@ -95,11 +95,11 @@ export const updateUser = async (req, res) => {
     if(req.params.id){
         //Finding and updating cloudinary image========================
      const findUserImg=await User.findById(req.params.id);
-     const imgPublicId=findUserImg?.UserImage?.public_id;
+     const imgPublicId=findUserImg?.profilePicture?.public_id;
      await cloudinary.v2.uploader.destroy(imgPublicId, function(error,result) {
-     res.status(200).json({msg:error,result}); }); 
+     return res.status(200).json({msg:error,result}); }); 
       const user = await User.findByIdAndUpdate({_id:req.params.id},{$set:req.body},{new:true});
-      res.status(200).json({msg:"User Updated Successful",user});
+     return res.status(200).json({msg:"User Updated Successful",User:user});
   }
     // if (req.body.password) {
     //   req.body.password = bcrypt.hashSync(req.body.password, 10);
@@ -125,7 +125,7 @@ export const updateUser = async (req, res) => {
 
    
   } catch (error) {
-    res.status(500).json(err);
+   return res.status(500).json(error);
   }
 };
 
@@ -134,7 +134,7 @@ export const updateAdminRole=async(req,res)=>{
   try {
     if(req.params.id){
     const user = await User.findByIdAndUpdate({_id:req.params.id},{$set:req.body},{new:true});
-    return res.status(200).json({msg:"Role Updated Successful",user});
+    return res.status(200).json({msg:"Role Updated Successful",User:user});
     }
   } catch (error) {
    return res.status(500).json(error);

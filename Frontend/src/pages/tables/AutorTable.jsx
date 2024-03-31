@@ -1,5 +1,6 @@
 import { Avatar, Space, Table, Typography } from "antd";
 import axios from "axios";
+import { useEffect,useState } from "react";
 import { useNavigate} from "react-router-dom";
 import { View, Heading, ScrollView,Button } from "@aws-amplify/ui-react";
 import useFetchData from "../../hooks/useFetchData";
@@ -7,9 +8,10 @@ import { BASE_URL } from '../../config';
 import { useSelector } from 'react-redux';
 function AuthorTable() {
   const userToken=useSelector((state)=>state?.currentUser[0]?.token);
+  const [fetchData,setFetchData]=useState([]);
   const navigate = useNavigate();
   const {resultData,loader,error}=useFetchData('api/user/userlist');
-  const allUsers=resultData?.findAllUsers;
+  // const allUsers=resultData?.findAllUsers;
 
 
   const UpdateAdminStatus=async(role,_id)=>{
@@ -20,9 +22,6 @@ function AuthorTable() {
       }else{
         adminRole="Super-Admin";
       }
-        // const userById=await axios.get(`/api/user/${id}`);
-        // const user=userById?.data?.Users;
-        // console.log(userById?.data?.Users?.role);
         const UpdateUserRole=await axios.patch(`${BASE_URL}/api/user/update-role/${_id._id}`,{
           "role":adminRole
         },{
@@ -49,6 +48,7 @@ function AuthorTable() {
               }
           })  
           if(delAuthor.status===200){
+            setFetchData(author=>author.filter((auth)=>auth._id!==id));
             alert("Author Deleted Successfull!...");
           
           }else{
@@ -60,7 +60,9 @@ function AuthorTable() {
     }
    
   }
-
+  useEffect(()=>{
+    setFetchData(resultData?.findAllUsers);
+  },[resultData]);
   return (<>
      <View
         backgroundColor="var(--amplify-colors-white)"
@@ -149,7 +151,7 @@ function AuthorTable() {
             },
           },
         ]}
-        dataSource={allUsers}
+        dataSource={fetchData}
         pagination={{
           pageSize: 5,
         }}

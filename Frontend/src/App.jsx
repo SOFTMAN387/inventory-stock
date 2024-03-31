@@ -38,6 +38,7 @@ export default function App() {
              <Route path="/admin/add-product" element={<AddProduct />} />
              <Route path="/admin/add-author" element={<AddAuthor />} />
              <Route path="/admin/edit-profile/:id" element={<EditAuthor />} />
+             <Route path="/admin/edit-user/:id" element={<EditAuthor />} />
              <Route path="/admin/edit-product/:id" element={<EditProduct />} />
              <Route path="/admin/orders" element={<OrderTable />} />
              <Route path="/admin/products" element={<ProductTable />} />

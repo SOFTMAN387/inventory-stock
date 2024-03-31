@@ -12,18 +12,18 @@ function CustomersTable() {
         columns={[
           {
             title: "Photo",
-            dataIndex: "image",
-            render: (link) => {
-              return <Avatar src={link} />;
+            dataIndex: "profilePicture",
+            render: (val) => {
+              return <Avatar src={val?.url} />;
             },
           },
           {
             title: "First Name",
-            dataIndex: "firstname",
+            dataIndex: "first_name",
           },
           {
             title: "LastName",
-            dataIndex: "lastname",
+            dataIndex: "last_name",
           },
           {
             title: "Email",

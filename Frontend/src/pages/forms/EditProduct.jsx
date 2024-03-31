@@ -78,7 +78,7 @@ const EditProduct = () => {
         setInputErr("Every field must required!...");
         return;
       }
-      if(!fileData){
+      if(!fileData && !productImage?.url){
         setFileErr("Please Select Product Img!...");
         return;
 
@@ -90,7 +90,7 @@ const EditProduct = () => {
                       Authorization:`Bearer ${userToken}`
                   }
               });
-           res && navigate("/admin/products");
+           res.status===200 && navigate("/admin/products");
      
  
     } catch (error) {

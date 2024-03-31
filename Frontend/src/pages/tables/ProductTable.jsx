@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useEffect, useState} from 'react';
 // import { getInventory } from '../../Api/ApiData';
 import "./table.css";
 import { View, Heading, ScrollView ,Menu, MenuButton } from "@aws-amplify/ui-react";
@@ -16,12 +16,11 @@ const BasicTable = () => {
   const navigate=useNavigate();
   const userToken=useSelector((state)=>state?.currentUser[0]?.token);
   const {resultData,loader,error}=useFetchData('api/product/productlist');
-  const allProducts=resultData?.findAllProducts;
-  console.log(allProducts);
+  const [fetchData,setFetchData]=useState([]);
   const [outStockProducts,setOutStockProducts]=useState([]);
   const outStock=()=>{
     try {
-      const outStock=allProducts.filter((item)=>{
+      const outStock=fetchData.filter((item)=>{
         return item.quantity===0;
       });
 
@@ -41,7 +40,8 @@ const BasicTable = () => {
                   Authorization:`Bearer ${userToken}`
               }
           })  
-          if(delProduct){
+          if(delProduct.status===200){
+            setFetchData(products=>products.filter((p)=>p._id!==id));
             alert("Product Deleted Successfull!...");
           
           }
@@ -51,7 +51,9 @@ const BasicTable = () => {
     }
    
   }
-
+useEffect(()=>{
+  setFetchData(resultData?.findAllProducts);
+},[resultData]);
   return (
     <>
         <View
@@ -142,7 +144,7 @@ const BasicTable = () => {
           },
         ]}
         
-        dataSource={outStockProducts.length>0?outStockProducts:allProducts}
+        dataSource={outStockProducts.length>0?outStockProducts:fetchData}
         pagination={{
           pageSize: 5,
         }}
