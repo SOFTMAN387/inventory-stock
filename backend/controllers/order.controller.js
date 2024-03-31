@@ -58,6 +58,21 @@ export const updateOrder = async (req, res) => {
 };
 
 
+//update Order Status
+
+export const updateOrderStatus = async (req, res) => {
+  try {
+    if(req.params.id){
+      const order = await Order.findByIdAndUpdate({_id:req.params.id},{$set:req.body},{new:true});
+     return res.status(200).json({msg:"Order Status Updated",order});
+  }
+   
+  } catch (error) {
+   return res.status(500).json(error);
+  }
+};
+
+
 
 //Find All Orders================================
 export const getAllOrders=async(req,res)=>{

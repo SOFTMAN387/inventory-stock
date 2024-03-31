@@ -5,7 +5,8 @@ import {
   getAllOrders,
   getOrder,
   deleteOrder,
-  createOrder
+  createOrder,
+  updateOrderStatus
 } from '../controllers/order.controller.js';
 import { verifyToken,isAdmin } from '../middleware/verifyUser.js';
 const router = express.Router();
@@ -16,6 +17,7 @@ router.get('/orderlist',verifyToken,getAllOrders);
 router.get('/:id',verifyToken,getOrder);
 router.post('/new-order',verifyToken,createOrder);
 router.patch('/update/:id',verifyToken,updateOrder);
+router.patch('/update-order-status/:id',verifyToken,updateOrderStatus);
 router.delete('/delete/:id', verifyToken,isAdmin,deleteOrder);
 //Orders routes ends here============================
 
