@@ -141,6 +141,17 @@ export const updateAdminRole=async(req,res)=>{
   }
 }
 
+export const verifyEmail=async(req,res)=>{
+  try {
+    const userEmail=req.body.email;
+    //Geting User's Email is valid or Not================
+    const chekEmail=await User.findOne({email:userEmail}); 
+    !chekEmail && res.status(400).json("Not valid Email");
+    return res.status(200).json({msg:"User Found Successful",chekEmail});
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+}
 
 export const forgotPassword=async(req,res)=>{
   try {
@@ -152,7 +163,7 @@ export const forgotPassword=async(req,res)=>{
       res.status(200).json({msg:"Forgot Password Updated Successful",user});
   }
   } catch (error) {
-    res.status(500).json(err);
+    res.status(500).json(error);
   }
 
 }
@@ -166,7 +177,7 @@ export const getAllUsers=async(req,res)=>{
     !findAllUsers && res.status(400).json("Not Found!...");
     res.status(200).json({msg:"User Found Successful",findAllUsers});
   } catch (error) {
-    res.status(500).json(err);
+    res.status(500).json(error);
   }
 }
 

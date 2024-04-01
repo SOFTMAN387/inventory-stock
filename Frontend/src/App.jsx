@@ -8,7 +8,8 @@ import Layout from "./components/Layout";
 import Dashboard from "./pages/dashboard";
 import Profile from "./pages/profile";
 import ProductTable from "./pages/tables/ProductTable"
-import OrderTable from "./pages/tables/OrdersTable"
+import OrderTable from "./pages/tables/OrdersTable";
+import OrderDetails from "./pages/order/orderDetails";
 import CustomersTable from "./pages/tables/CustomerTable";
 import AuthorTable from "./pages/tables/AutorTable";
 import EditProduct from "./pages/forms/EditProduct";
@@ -24,6 +25,7 @@ import { useSelector } from 'react-redux';
 
 export default function App() {
   const authUser= useSelector((state) => state?.currentUser[0]) || [];
+  const forgotData=useSelector((state)=>state.forgotUser)||[];
  
   return (
     <ThemeProvider theme={theme}>
@@ -41,6 +43,7 @@ export default function App() {
              <Route path="/admin/edit-user/:id" element={<EditAuthor />} />
              <Route path="/admin/edit-product/:id" element={<EditProduct />} />
              <Route path="/admin/orders" element={<OrderTable />} />
+             <Route path="/admin/order-view/:id" element={<OrderDetails />} />
              <Route path="/admin/products" element={<ProductTable />} />
              <Route path="/admin/customers" element={<CustomersTable />} />
              <Route path="/admin/author" element={<AuthorTable />} />
@@ -57,7 +60,7 @@ export default function App() {
               <Route>
                   <Route index element={<Login />} />
                   <Route path="/admin/forgot-password" element={<Forgot />} />
-                  <Route path="/admin/new-password" element={<NewPassword />} />
+                  <Route path="/new-password" element={forgotData && forgotData.length===1?<NewPassword />:<Forgot />} />
                   <Route path="*" element={<NoMatch />} />
               </Route>
           }

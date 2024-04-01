@@ -29,12 +29,12 @@ const inventorySlice = createSlice({
         logoutUser: (state) => {
             state.currentUser = [];
         },
-        // forgotPassword: (state, action) => {
-        //     state.forgotUser = action.payload;
-        // },
-        // newPassword: (state) => {
-        //     state.forgotUser = [];
-        // },
+        forgotPassword: (state, action) => {
+            state.forgotUser = action.payload;
+        },
+        newPassword: (state) => {
+            state.forgotUser = [];
+        },
         // addFavourite: (state, action) => {
         //     state.favourite.push(action.payload);
         // },

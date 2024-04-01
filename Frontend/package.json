@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@aws-amplify/ui-react": "^5.2.0",
+    "@emailjs/browser": "^4.3.3",
     "@reduxjs/toolkit": "^2.2.2",
     "@testing-library/jest-dom": "^6.1.0",
     "@testing-library/react": "^14.0.0",
@@ -15,6 +16,7 @@
     "antd": "^5.15.0",
     "apexcharts": "^3.41.1",
     "axios": "^1.6.8",
+    "emailjs": "^4.0.3",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-dom": "^18.2.0",

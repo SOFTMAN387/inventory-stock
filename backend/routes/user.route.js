@@ -8,7 +8,8 @@ import {
   deleteUser,
   createUser,
   forgotPassword,
-  updateAdminRole
+  updateAdminRole,
+  verifyEmail
 } from '../controllers/user.controller.js';
 import { verifyToken,isAdmin } from '../middleware/verifyUser.js';
 const router = express.Router();
@@ -21,7 +22,8 @@ router.post('/login',loginUser);
 router.post('/register',isAdmin,createUser);
 router.patch('/update/:id',verifyToken,isAdmin, updateUser);
 router.patch('/update-role/:id',verifyToken,isAdmin, updateAdminRole);
-router.patch('/forgot-password/:id',forgotPassword);
+router.post('/verify-email',verifyEmail);
+router.patch('/new-password/:id',forgotPassword);
 router.delete('/delete/:id', verifyToken, deleteUser);
 //users routes ends here============================
 
