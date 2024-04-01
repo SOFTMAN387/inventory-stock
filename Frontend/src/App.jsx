@@ -26,6 +26,8 @@ import { useSelector } from 'react-redux';
 export default function App() {
   const authUser= useSelector((state) => state?.currentUser[0]) || [];
   const forgotData=useSelector((state)=>state.forgotUser)||[];
+  const userRole=useSelector((state)=>state?.currentUser[0]?.user?.role);
+
  
   return (
     <ThemeProvider theme={theme}>
@@ -46,7 +48,7 @@ export default function App() {
              <Route path="/admin/order-view/:id" element={<OrderDetails />} />
              <Route path="/admin/products" element={<ProductTable />} />
              <Route path="/admin/customers" element={<CustomersTable />} />
-             <Route path="/admin/author" element={<AuthorTable />} />
+             <Route path="/admin/author" element={userRole==="Super-Admin"?<AuthorTable />:<CustomersTable />} />
             
              {/* <Route path="users-table" element={<UsersTable />} /> */}
              <Route path="/profile/:id" element={<Profile />} />
@@ -61,7 +63,7 @@ export default function App() {
                   <Route index element={<Login />} />
                   <Route path="/admin/forgot-password" element={<Forgot />} />
                   <Route path="/new-password" element={forgotData && forgotData.length===1?<NewPassword />:<Forgot />} />
-                  <Route path="*" element={<NoMatch />} />
+                  <Route path="*" element={<Login/>} />
               </Route>
           }
          

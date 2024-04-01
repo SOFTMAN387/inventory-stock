@@ -7,7 +7,7 @@ const useFetchData = (url) => {
     const [resultData,setData]=useState();
     const [error,setError]=useState(false);
     const [loader,setloader]=useState(false);
-    console.log(resultData);
+    // console.log(resultData);
     useEffect(()=>{
         const fetchData=async()=>{
             try {
@@ -23,7 +23,7 @@ const useFetchData = (url) => {
                 if(!res.ok){
                    throw new Error(result.message);
                 }
-                console.log(result);
+                // console.log(result);
                 setData(result);
                 setloader(false);
                 

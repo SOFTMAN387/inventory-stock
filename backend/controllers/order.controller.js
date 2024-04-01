@@ -31,10 +31,14 @@ export const createOrder = async(req, res) => {
     
         //save Order and respond
         const order = await newOrder.save();
-        res.status(200).json({msg:"Order created Successful",order});
+        if(!order){
+          return res.status(400).json("Not Found!...");
+        }else{
+          return res.status(200).json({msg:"Order created Successful",order});
+        }
       } catch (err) {
         console.log(err);
-        res.status(500).json(err);
+       return res.status(500).json(err);
       }
   };
 
@@ -47,13 +51,22 @@ export const updateOrder = async (req, res) => {
     const findOrderImg=await Order.findById(req.params.id);
     const imgPublicId=findOrderImg?.OrderImage?.public_id;
     await cloudinary.v2.uploader.destroy(imgPublicId, function(error,result) {
-    res.status(200).json({msg:error,result}); }); 
+   if(result){
+    return res.status(200).json({result});
+   } else{
+    return res.status(200).json({msg:error});
+   }
+   }); 
       const order = await Order.findByIdAndUpdate({_id:req.params.id},{$set:req.body},{new:true});
-      res.status(200).json({msg:"Order Updated Successful",order});
+      if(!order){
+        return res.status(200).json({msg:"Coudn't Update!"});
+      }else{
+     return res.status(200).json({msg:"Order Updated Successful",order});
+      }
   }
    
   } catch (error) {
-    res.status(500).json(error);
+   return res.status(500).json(error);
   }
 };
 
@@ -64,7 +77,11 @@ export const updateOrderStatus = async (req, res) => {
   try {
     if(req.params.id){
       const order = await Order.findByIdAndUpdate({_id:req.params.id},{$set:req.body},{new:true});
+      if(!order){
+     return res.status(200).json({msg:"Couldn't Update"});
+      }else{
      return res.status(200).json({msg:"Order Status Updated",order});
+      }
   }
    
   } catch (error) {
@@ -78,10 +95,13 @@ export const updateOrderStatus = async (req, res) => {
 export const getAllOrders=async(req,res)=>{
   try {
     const findAllOrders = await Order.find({});
-    !findAllOrders && res.status(400).json("Not Found!...");
-    res.status(200).json({msg:"Order Found Successful",findAllOrders});
+    if(!findAllOrders){
+    return res.status(400).json("Not Found!...");
+    }else{
+   return res.status(200).json({msg:"Order Found Successful",findAllOrders});
+    }
   } catch (error) {
-    res.status(500).json(err);
+   return res.status(500).json(err);
   }
 }
 
@@ -90,11 +110,16 @@ export const getAllOrders=async(req,res)=>{
 export const getOrder=async(req,res)=>{
   try {
     const id=req.params.id;
-    !id && res.status(400).json("No Order Id !...");
-
+    if(!id){
+      res.status(400).json("No Order Id !...");
+    }
     const findOrder = await Order.find({_id:id});
-    !findOrder && res.status(400).json("Not Found!...");
-    res.status(200).json({msg:"Order Found Successful",findOrder});
+    if(!findOrder){
+    return res.status(400).json("Not Found!...");
+    }else{
+    return res.status(200).json({msg:"Order Found Successful",findOrder});
+
+    }
   } catch (error) {
     res.status(500).json(error);
   }
@@ -108,9 +133,16 @@ export const deleteOrder = async (req, res, next) => {
     const findOrderImg=await Order.findById(req.params.id);
     const imgPublicId=findOrderImg?.OrderImage?.public_id;
     await cloudinary.v2.uploader.destroy(imgPublicId, function(error,result) {
-    res.status(200).json({msg:error,result}); }); 
+      if(result){
+        return res.status(200).json({result});
+       } else{
+        return res.status(200).json({msg:error});
+       }
+       }); 
    const delOrder= await Order.findByIdAndDelete({_id:req.params.id},{new:true});
-    res.status(200).json({msg:'Order has been deleted...',delOrder});
+   if(delOrder){
+   return res.status(200).json({msg:'Order has been deleted...',delOrder});
+   }
   } catch (error) {
     next(error);
   }

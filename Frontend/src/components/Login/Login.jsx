@@ -15,8 +15,7 @@ const Login = () => {
   const [err,setErr]=useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  
+  const [role, setRole] = useState("");  
   const handleLogin = async () => {
     try {
       
@@ -25,6 +24,7 @@ const Login = () => {
      {
       email,
       password,
+      role
     });
     if (res?.data) {
       // Cookies.set("user", res.data.token, { expires: 7 });
@@ -32,11 +32,11 @@ const Login = () => {
       toast(res.data.msg);
       navigate("/");
     }else{
-      setErr(res.data.msg);
+      setErr("Wrong email or password");
     }
       
     } catch (error) {
-      setErr(error.message);
+      setErr("Something Went Wrong...");
     }
   };
 
@@ -81,8 +81,13 @@ const Login = () => {
       </label>
       <input onChange={(e) => setPassword(e.target.value)} className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************" />
       <br/>
-       {err && <span className="text-black-400 text-sm ml-10">{err}</span>}
+     
     </div>
+    <select onChange={(e) => setRole(e.target.value)} name="role" className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block  focus:border-blue-500 text-gray-700 w-auto">
+    <option value="Admin">Login as Admin</option>
+    <option value="Super-Admin">Login as Super Admin</option>
+    </select><br/>
+    {err && <span className="text-red-500 text-sm ml-10">{err}</span>}<br/><br/>
     <div className="flex items-center justify-between ">
       <button   onClick={handleLogin } className="bg-blue-500 hover:bg-blue-700 w-auto text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
         Sign In

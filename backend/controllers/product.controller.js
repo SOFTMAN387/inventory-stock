@@ -32,7 +32,10 @@ export const createProduct = async(req, res) => {
     
         //save Product and respond
         const product = await newProduct.save();
-       return res.status(200).json(product);
+        if(product){
+          return res.status(200).json(product);
+        }
+       
       } catch (err) {
         console.log(err);
       return res.status(500).json(err);
@@ -48,11 +51,19 @@ export const updateProduct = async (req, res) => {
     const findProductImg=await Product.findById(req.params.id);
     const imgPublicId=findProductImg?.productImage?.public_id;
     await cloudinary.v2.uploader.destroy(imgPublicId, function(error,result) {
-   res.status(200).json({msg:error,result}); }); 
+      if(result){
+        return res.status(200).json({result});
+       } else{
+        return res.status(200).json({msg:error});
+       }
+    }); 
     const product = await Product.findByIdAndUpdate({_id:req.params.id},{$set:req.body},{new:true});
-   return res.status(200).json({msg:"Product Updated Successful",product});
+    if(!product){
+      return res.status(400).json("Not Found!...");
+    }else{
+    return res.status(200).json({msg:"Product Updated Successful",product});
+    }
   }
-   
   } catch (error) {
    return res.status(500).json(error);
   }
@@ -64,10 +75,13 @@ export const updateProduct = async (req, res) => {
 export const getAllProducts=async(req,res)=>{
   try {
     const findAllProducts = await Product.find({});
-    !findAllProducts && res.status(400).json("Not Found!...");
-    res.status(200).json({msg:"Product Found Successful",findAllProducts});
+    if(!findAllProducts){
+    return res.status(400).json("Not Found!...");
+    }else{
+   return res.status(200).json({msg:"Product Found Successful",findAllProducts});
+    }
   } catch (error) {
-    res.status(500).json(error);
+   return res.status(500).json(error);
   }
 }
 
@@ -76,13 +90,17 @@ export const getAllProducts=async(req,res)=>{
 export const getProduct=async(req,res)=>{
   try {
     const id=req.params.id;
-    !id && res.status(400).json("No Product Id !...");
-
+    if(!id){
+    return res.status(400).json("No Product Id !...");
+    }
     const findProduct = await Product.find({_id:id});
-    !findProduct && res.status(400).json("Not Found!...");
-    res.status(200).json({msg:"Product Found Successful",findProduct});
+    if(!findProduct){
+     return res.status(400).json("Not Found!...");
+    }else{
+    return res.status(200).json({msg:"Product Found Successful",findProduct});
+    }
   } catch (error) {
-    res.status(500).json(error);
+   return res.status(500).json(error);
   }
 }
 
@@ -94,11 +112,17 @@ export const deleteProduct = async (req, res, next) => {
     const findProductImg=await Product.findById(req.params.id);
    const imgPublicId=findProductImg?.productImage?.public_id;
     await cloudinary.v2.uploader.destroy(imgPublicId, function(error,result) {
-   res.status(200).json({msg:error,result}); }); 
+      if(result){
+        return res.status(200).json({result});
+       } else{
+        return res.status(200).json({msg:error});
+       }
+    }); 
 
-   await Product.findByIdAndDelete({_id:req.params.id},{new:true});
-   res.status(200).json({msg:'Product has been deleted...'});
-
+  const DelProduct= await Product.findByIdAndDelete({_id:req.params.id},{new:true});
+  if(DelProduct){
+    return res.status(200).json({msg:'Product has been deleted...'});
+  }
   } catch (error) {
     next(error);
   }

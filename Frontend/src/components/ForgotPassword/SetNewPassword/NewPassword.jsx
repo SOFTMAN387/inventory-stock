@@ -34,10 +34,7 @@ const NewPassword = () => {
           else{
                 setPassErr(true);
             }
-   
-}
-
-
+        }
 
 
 

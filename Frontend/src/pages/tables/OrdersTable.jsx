@@ -10,12 +10,15 @@ const OrdersTable = () => {
   const navigate=useNavigate();
   const {resultData,loader,error}=useFetchData('api/order/orderlist');
   const userToken=useSelector((state)=>state?.currentUser[0]?.token);
+  const userRole=useSelector((state)=>state?.currentUser[0]?.user?.role);
+
   const [fetchData,setFetchData]=useState([]);
  // const allOrders=resultData?.findAllOrders;
-
-console.log(fetchData);
-  
   const DeleteOrder=async(id)=>{
+    if( userRole==="Admin"){
+      alert("Your are not Super Admin");
+      return;
+    }
     if(id){
       try {
         const delOrder= await axios.delete(`${BASE_URL}/api/order/delete/${id}`, {
@@ -38,6 +41,10 @@ console.log(fetchData);
 
 
   const UpdateOrderStatus=async(ord_status,_id)=>{
+    if( userRole==="Admin"){
+      alert("Your are not Super Admin");
+      return;
+    }
     try {
       let orderStatus;
       if(ord_status==="pending"){
@@ -59,7 +66,7 @@ console.log(fetchData);
         if(UpdateOrderStatus.status===200){
           navigate("/admin/orders");
         }
-        console.log(UpdateOrderStatus);
+        // console.log(UpdateOrderStatus);
     } catch (error) {
       console.log(error);
     }

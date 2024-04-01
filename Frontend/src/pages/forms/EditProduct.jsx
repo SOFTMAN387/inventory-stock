@@ -11,6 +11,8 @@ const EditProduct = () => {
   const navigate=useNavigate();
   const id=useParams().id;
   const userToken=useSelector((state)=>state?.currentUser[0]?.token);
+  const userRole=useSelector((state)=>state?.currentUser[0]?.user?.role);
+
   const [fileErr,setFileErr]=useState("");
   const [fileUrl,setFileUrl]=useState("");
   const [inputErr,setInputErr]=useState("");
@@ -72,19 +74,23 @@ const EditProduct = () => {
   }
 
   const updateProduct=async()=>{
+    if( userRole==="Admin"){
+      alert("Your are not Super Admin");
+      return;
+    }
     try {
       const {title,price,quantity,rating,category,sub_category,description,productImage}=updateData;
       if(title|price|quantity|rating|category|sub_category|description ===""){
         setInputErr("Every field must required!...");
-        return;
+        // return;
       }
-      if(!fileData && !productImage?.url){
+      if(!fileData && !productImage){
         setFileErr("Please Select Product Img!...");
         return;
 
       }
         const res=await axios.patch(`${BASE_URL}/api/product/update/${id}`,
-              {...updateData,productImage:fileData.url?fileData:productImage},
+              {...updateData,productImage:fileData?fileData:productImage},
               {
                 headers:{
                       Authorization:`Bearer ${userToken}`
@@ -143,11 +149,13 @@ const EditProduct = () => {
   <div className="p-8 rounded border border-gray-200">
   <h1 className="font-medium text-xl">Edit Product</h1>
   <br/>
-  <div className='w-full'>
+       {userRole==="Super-Admin" &&  <div className='w-full'>
             <label for="product-img" className="text-sm text-gray-700 block mb-1 font-medium">Product Image</label>
             <input type="file" onChange={handleFileInputChang}
              name='photo' accept='.jpg, .png' id="product-img" className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-auto" placeholder="Choose Image" />
-          </div>
+        </div>
+         }
+    
        <div className="max-w-sm rounded overflow-hidden shadow-lg"><br/>
       <img className="w-full" src={`${fileUrl===""?updateData?.productImage?.url:fileUrl}`} alt="Product_thumnail" />
       {/* <img className="w-full" src={`${resultData?.productImg?.url===null?"https://tse1.mm.bing.net/th?id=OIP.F4eiZn0Wjgp4EFtocph2BAAAAA&pid=Api&P=0&h=180":resultData?.productImg?.url}`} alt="Product_thumnail" /> */}

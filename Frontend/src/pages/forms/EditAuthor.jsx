@@ -9,12 +9,13 @@ const EditAuthor = () => {
   const navigate=useNavigate();
   const id=useParams().id;
   const userToken=useSelector((state)=>state?.currentUser[0]?.token);
+  const userRole=useSelector((state)=>state?.currentUser[0]?.user?.role);
+
   const [fileErr,setFileErr]=useState("");
   const [fileUrl,setFileUrl]=useState("");
   const [inputErr,setInputErr]=useState("");
   const[updateData,setUpdateData]=useState();
   const [fileData,setFileData]=useState();
-console.log(updateData)
   const profileList = [
     {
         id: 1,
@@ -55,7 +56,6 @@ console.log(updateData)
     
     }
     // setFormData({...formData,photo:data.url})
-    console.log(data);
   }
 
    
@@ -68,6 +68,10 @@ console.log(updateData)
 
 
 const updateAuthor=async()=>{
+  if( userRole==="Admin"){
+    alert("Your are not Super Admin");
+    return;
+  }
   try {
     const {first_name,last_name,email,mobile,profile,role,profilePicture}=updateData;
     if(first_name|last_name|email|mobile|profile|role|profilePicture ===""){
@@ -134,11 +138,14 @@ useEffect(()=>{
       > <br></br>
     <h3 className='text-xl font-bold'>Edit Author</h3>
     <br/>
-    <div className='w-full'>
-            <label for="author-img" className="text-sm text-gray-700 block mb-1 font-medium">Author Image</label>
-            <input type="file"  onChange={handleFileInputChang}
-             name='photo' accept='.jpg, .png'  id="author-img" className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-auto" placeholder="Choose Image" />
-          </div>
+    {
+      userRole==="Super-Admin" &&  <div className='w-full'>
+      <label for="author-img" className="text-sm text-gray-700 block mb-1 font-medium">Author Image</label>
+      <input type="file"  onChange={handleFileInputChang}
+       name='photo' accept='.jpg, .png'  id="author-img" className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-auto" placeholder="Choose Image" />
+    </div>
+    }
+   
        <div className="max-w-sm rounded overflow-hidden shadow-lg"><br/>
        <img className="w-full" src={`${fileUrl===""?updateData?.profilePicture?.url:fileUrl}`} alt="Product_thumnail" />
     </div><br/>

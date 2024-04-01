@@ -15,6 +15,7 @@ import { BASE_URL } from '../../config';
 const BasicTable = () => {
   const navigate=useNavigate();
   const userToken=useSelector((state)=>state?.currentUser[0]?.token);
+  const userRole=useSelector((state)=>state?.currentUser[0]?.user?.role);
   const {resultData,loader,error}=useFetchData('api/product/productlist');
   const [fetchData,setFetchData]=useState([]);
   const [outStockProducts,setOutStockProducts]=useState([]);
@@ -33,6 +34,10 @@ const BasicTable = () => {
   
 
   const DeleteProduct=async(id)=>{
+    if( userRole==="Admin"){
+      alert("Your are not Super Admin");
+      return;
+    }
     if(id){
       try {
         const delProduct= await axios.delete(`${BASE_URL}/api/product/delete/${id}`, {

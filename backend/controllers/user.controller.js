@@ -42,7 +42,11 @@ export const createUser = async(req, res) => {
     
         //save user and respond
         const user = await newUser.save();
-        return res.status(200).json(user);
+        if(!user){
+          return res.status(400).json("Not Found!...");
+        }else{
+          return res.status(200).json({msg:"user created Successful",user});
+        }
       } catch (err) {
         console.log(err);
        return res.status(500).json(err);
@@ -53,7 +57,7 @@ export const createUser = async(req, res) => {
   export const loginUser=async(req,res)=>{
     try {
       //find user
-      const user = await User.findOne({ email:req.body.email });
+      const user = await User.findOne({ email:req.body.email,role:req.body.role });
       if(!user){
        return res.status(400).json({msg:"Wrong email or password"});
       }
@@ -97,9 +101,19 @@ export const updateUser = async (req, res) => {
      const findUserImg=await User.findById(req.params.id);
      const imgPublicId=findUserImg?.profilePicture?.public_id;
      await cloudinary.v2.uploader.destroy(imgPublicId, function(error,result) {
-     return res.status(200).json({msg:error,result}); }); 
+      if(result){
+        return res.status(200).json({result});
+       } else{
+        return res.status(200).json({msg:error});
+       }
+    }); 
       const user = await User.findByIdAndUpdate({_id:req.params.id},{$set:req.body},{new:true});
+      if(!user){
+     return res.status(200).json({msg:"Couldn't Update!"});
+      }else{
      return res.status(200).json({msg:"User Updated Successful",User:user});
+
+      }
   }
     // if (req.body.password) {
     //   req.body.password = bcrypt.hashSync(req.body.password, 10);
@@ -133,8 +147,10 @@ export const updateUser = async (req, res) => {
 export const updateAdminRole=async(req,res)=>{
   try {
     if(req.params.id){
-    const user = await User.findByIdAndUpdate({_id:req.params.id},{$set:req.body},{new:true});
-    return res.status(200).json({msg:"Role Updated Successful",User:user});
+      const user = await User.findByIdAndUpdate({_id:req.params.id},{$set:req.body},{new:true});
+      if(user){
+      return res.status(200).json({msg:"Role Updated Successful",User:user});
+      }
     }
   } catch (error) {
    return res.status(500).json(error);
@@ -146,8 +162,11 @@ export const verifyEmail=async(req,res)=>{
     const userEmail=req.body.email;
     //Geting User's Email is valid or Not================
     const chekEmail=await User.findOne({email:userEmail}); 
-    !chekEmail && res.status(400).json("Not valid Email");
+    if(!chekEmail){
+    return  res.status(400).json("Not valid Email");
+    }else{
     return res.status(200).json({msg:"User Found Successful",chekEmail});
+    }
   } catch (error) {
     return res.status(500).json(error);
   }
@@ -160,7 +179,12 @@ export const forgotPassword=async(req,res)=>{
       req.body.password = bcrypt.hashSync(req.body.password, 10);
     }
       const user = await User.findByIdAndUpdate({_id:req.params.id},{$set:{password:req.body.password}},{new:true});
-      res.status(200).json({msg:"Forgot Password Updated Successful",user});
+      if(!user){
+      res.status(200).json({msg:"Couldn't Updated"});
+      }else{
+     return res.status(200).json({msg:"Forgot Password Updated Successful",user});
+
+      }
   }
   } catch (error) {
     res.status(500).json(error);
@@ -173,11 +197,16 @@ export const forgotPassword=async(req,res)=>{
 //Find All Users================================
 export const getAllUsers=async(req,res)=>{
   try {
-    const findAllUsers = await User.find({});
-    !findAllUsers && res.status(400).json("Not Found!...");
-    res.status(200).json({msg:"User Found Successful",findAllUsers});
+        const findAllUsers = await User.find({});
+    if(!findAllUsers){
+      return res.status(400).json("Not Found!...");
+
+    }else{
+      return res.status(200).json({msg:"User Found Successful",findAllUsers});
+
+    }
   } catch (error) {
-    res.status(500).json(error);
+   return res.status(500).json(error);
   }
 }
 
@@ -186,11 +215,17 @@ export const getAllUsers=async(req,res)=>{
 export const getUser=async(req,res)=>{
   try {
     const id=req.params.id;
-    !id && res.status(400).json("No User Id !...");
+    if(!id){
+      return res.status(400).json("No User Id !...");
+    }
 
     const findUser = await User.find({_id:id});
-    !findUser && res.status(400).json("Not Found!...");
-    res.status(200).json({msg:"User Found Successful",findUser});
+    if(!findUser){
+      return res.status(400).json("Not Found!...");
+    }else{
+   return res.status(200).json({msg:"User Found Successful",findUser});
+
+    }
   } catch (error) {
     res.status(500).json(error);
   }
@@ -204,9 +239,16 @@ export const deleteUser = async (req, res, next) => {
      const findUserImg=await User.findById(req.params.id);
      const imgPublicId=findUserImg?.profilePicture?.public_id;
      await cloudinary.v2.uploader.destroy(imgPublicId, function(error,result) {
-    return res.status(200).json({msg:error,result}); }); 
+      if(result){
+        return res.status(200).json({result});
+       } else{
+        return res.status(200).json({msg:error});
+       }
+      }); 
     const delUser= await User.findByIdAndDelete({_id:req.params.id},{new:true});
+    if(delUser){
    return res.status(200).json({msg:'User has been deleted...',delUser});
+    }
   } catch (error) {
     next(error);
   }

@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 const AddProduct = () => {
   const navigate=useNavigate();
   const userToken=useSelector((state)=>state?.currentUser[0]?.token);
+  const userRole=useSelector((state)=>state?.currentUser[0]?.user?.role);
   // const [selectFile,setSelectFile]=useState(null);
   // const [fileUrl,setFileUrl]=useState(null);
   const [fileData,setFileData]=useState({});
@@ -72,8 +73,7 @@ const AddProduct = () => {
     
     }
   }
-console.log(productData);
-  
+
   const handleInputChange=async(e)=>{
     e.preventDefault();
     setProductData({...productData,[e.target.name]:e.target.value});
@@ -81,6 +81,10 @@ console.log(productData);
   }
 
   const submitProduct=async()=>{
+    if( userRole==="Admin"){
+      alert("Your are not Super Admin");
+      return;
+    }
     try {
       const {title,price,quantity,rating,category,sub_category,description}=productData;
       if(title|price|quantity|rating|category|sub_category|description ===""){
@@ -166,11 +170,11 @@ console.log(productData);
      Write Description..
     </label>
   </div>
-  <div className='w-full'>
+  {userRole==="Super-Admin" && <div className='w-full'>
             <label for="product-img" className="text-sm text-gray-700 block mb-1 font-medium">Product Image</label>
             <input type="file"  onChange={handleFileInputChang}
              name='photo' accept='.jpg, .png' id="product-img" className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-auto" placeholder="Choose Image" />
-          </div>
+          </div> } 
        <div className="max-w-sm rounded overflow-hidden shadow-lg" ><br/>
       <img className="w-full" src={`${fileData?.url?fileData?.url:"https://tse1.mm.bing.net/th?id=OIP.F4eiZn0Wjgp4EFtocph2BAAAAA&pid=Api&P=0&h=180"}`} alt="Product_thumnail" />
     </div>
