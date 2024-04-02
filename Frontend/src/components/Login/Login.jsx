@@ -84,12 +84,13 @@ const Login = () => {
      
     </div>
     <select onChange={(e) => setRole(e.target.value)} name="role" className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block  focus:border-blue-500 text-gray-700 w-auto">
-    <option value="Admin">Login as Admin</option>
     <option value="Super-Admin">Login as Super Admin</option>
+    <option value="Admin">Login as Admin</option>
+
     </select><br/>
     {err && <span className="text-red-500 text-sm ml-10">{err}</span>}<br/><br/>
     <div className="flex items-center justify-between ">
-      <button   onClick={handleLogin } className="bg-blue-500 hover:bg-blue-700 w-auto text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+      <button   onClick={handleLogin } className="bg-teal-700 hover:bg-teal-900 w-auto text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
         Sign In
       </button>
       <Link className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" to="/admin/forgot-password">

@@ -6,7 +6,7 @@ import bcrypt from 'bcryptjs';
 
 const genToken=user=>{
   return jwt.sign({id:user._id,role:user.role},process.env.JWT_TOKEN_KEY,{
-      expiresIn:"2d",
+      expiresIn:"30d",
   })
 }
 

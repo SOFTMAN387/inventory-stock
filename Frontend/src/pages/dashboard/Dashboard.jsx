@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import {
   View,
   Grid,
@@ -14,8 +15,9 @@ import TrafficSources from "./TrafficSources";
 import SalesSummary from "./SalesSummary";
 import TrafficSummary from "./TrafficSummary";
 import CustomersSummary from "./CustomersSummary";
-
 import "./Dashboard.css";
+import { BASE_URL } from "../../config";
+import { useSelector } from 'react-redux';
 
 /// Mock Data
 const barChartDataDemo = [
@@ -53,6 +55,7 @@ const lineChartData = [
   },
 ];
 
+
 const customersData = [
   {
     name: "New Customers",
@@ -69,15 +72,64 @@ const getChartData = () =>
     setTimeout(() => resolve(Object.values(barChartDataDemo)), 750);
   });
 
+
+
 const Dashboard = () => {
+  const userToken=useSelector((state)=>state?.currentUser[0]?.token);
   const [barChartData, setBarChartData] = useState(null);
+  const [productData, setProductData] = useState([]);
+  const [productStockData, setProductStockData] = useState([]);
+  const [orderData, setOrderData] = useState([]);
+  const [userData, setUserData] = useState([]);
+  const [revenueData, setRevenueData] = useState("");
+  const [error,setError]=useState(false);
+
   const [trafficSourceData, setTrafficSourceData] = useState(null);
   const { tokens } = useTheme();
+ // console.log(userData,productData,orderData);
+
+  useEffect(()=>{
+    const fetchData=async()=>{
+      try {
+        const productResponse=await axios.get(`${BASE_URL}/api/product/productlist`,{
+          headers:{
+                 Authorization:`Bearer ${userToken}`
+             }
+         });
+        const userResponse=await axios.get(`${BASE_URL}/api/user/userlist`,{
+          headers:{
+                 Authorization:`Bearer ${userToken}`
+             }
+         });
+        const orderResponse=await axios.get(`${BASE_URL}/api/order/orderlist`,{
+          headers:{
+                 Authorization:`Bearer ${userToken}`
+             }
+         });
+         if(orderResponse?.status && productResponse?.status && userResponse?.status===200){
+          setUserData(userResponse?.data?.findAllUsers);
+          setOrderData(orderResponse?.data?.findAllOrders);
+          setProductData(productResponse?.data?.findAllProducts);
+          setProductStockData(productResponse?.data?.findAllProducts.filter(val=>val.quantity===0));
+          const allRevenue=orderResponse?.data?.findAllOrders?.map(val=>val.totalAmount)?.reduce((total,current)=>{
+            return total+current;
+          },0);
+         setRevenueData(allRevenue);
+       }else{
+           throw new Error(orderResponse?.message,productResponse?.message,userResponse?.message);
+       }
+      } catch (error) {
+        setError(error.message);
+      }
+    }
+    fetchData();
+  },[userToken]);
 
   useEffect(() => {
     const doChartData = async () => {
       const result = await getChartData();
       setBarChartData(result);
+      // console.log(result);
       setTrafficSourceData([112332, 123221, 432334, 342334, 133432]);
     };
 
@@ -88,6 +140,7 @@ const Dashboard = () => {
     <>
       <div>
         <h2>Dashboard</h2>
+        {error&&<span>{error}</span>}
       </div>
       <View borderRadius="6px" maxWidth="100%" padding="0rem" minHeight="100vh">
         <Grid
@@ -98,31 +151,31 @@ const Dashboard = () => {
           <View rowSpan={{ base: 1, large: 1 }}>
             <MiniStatistics
               title="Customers"
-              amount="321,236"
+              amount={userData?.length}
               icon={<MdPermIdentity />}
             />
           </View>
           <View rowSpan={{ base: 1, large: 1 }}>
-            <MiniStatistics title="Orders" amount="251,607" icon={<MdWeb />} />
+            <MiniStatistics title="Orders" amount={orderData?.length} icon={<MdWeb />} />
           </View>
           <View rowSpan={{ base: 1, large: 1 }}>
             <MiniStatistics
               title="Products"
-              amount="23,762"
+              amount={productData?.length}
               icon={<MdShoppingCartCheckout />}
             />
           </View>
           <View rowSpan={{ base: 1, large: 1 }}>
             <MiniStatistics
               title="Out Stock"
-              amount="11"
+              amount={productStockData?.length}
               icon={<MdOutlineRemoveShoppingCart />}
             />
           </View>
           <View rowSpan={{ base: 1, large: 1 }}>
             <MiniStatistics
               title="Revenue"
-              amount="25,00365"
+              amount={revenueData}
               icon={<MdRateReview />}
             />
           </View>
