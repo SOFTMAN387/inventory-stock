@@ -68,7 +68,8 @@ const Login = () => {
       
     <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
     <h3 className='text-xl font-bold'>Login to Dashboard</h3>
-    <br/>
+    <br/><b>Note:</b> for testing you can use UserName: <b>"test@gmail.com" </b>& Password: <b>"test@123"</b>.
+    <br/><br/>
     <div className="mb-4">
       <label className="block text-gray-700 text-sm font-bold mb-2" for="Email">
       Email

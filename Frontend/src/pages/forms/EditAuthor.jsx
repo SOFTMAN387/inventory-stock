@@ -88,7 +88,7 @@ const updateAuthor=async()=>{
                     Authorization:`Bearer ${userToken}`
                 }
             });
-            console.log(res);
+          //  console.log(res);
             res.status===200 && navigate("/admin/author");
    
 

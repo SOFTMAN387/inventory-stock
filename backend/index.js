@@ -25,15 +25,15 @@ const corsOptons={
 };
 app.use(cors(corsOptons));
 
-//Deployment Code starts in productions=====================
+
+//Deployment Code starts in For MERN STACK productions=====================
 
 // const __dirname = path.resolve();
-//     app.use(express.static(path.join(__dirname, '/client/dist')));
+//     app.use(express.static(path.join(__dirname, '/frontend/build')));
 
-//     app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+//     app.get('/*', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
 // });
-
 
 
 //Deployment Code ends in productions=====================
