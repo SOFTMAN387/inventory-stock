@@ -5,11 +5,11 @@ import userRoutes from './routes/user.route.js';
 import productRoutes from './routes/product.route.js';
 import orderRoutes from './routes/order.route.js';
 import cors from "cors";
-import path from "path";
+//import path from "path";
 // import authRoutes from './routes/auth.route.js';
 import cookieParser from 'cookie-parser';
 import connectDB from './mongoDB/connect.js';
-// import path from 'path';
+ import path from 'path';
 dotenv.config();
           
 cloudinary.config({ 
