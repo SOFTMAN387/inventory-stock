@@ -5,6 +5,7 @@ import userRoutes from './routes/user.route.js';
 import productRoutes from './routes/product.route.js';
 import orderRoutes from './routes/order.route.js';
 import cors from "cors";
+import path from "path";
 // import authRoutes from './routes/auth.route.js';
 import cookieParser from 'cookie-parser';
 import connectDB from './mongoDB/connect.js';
@@ -28,12 +29,12 @@ app.use(cors(corsOptons));
 
 //Deployment Code starts in For MERN STACK productions=====================
 
-// const __dirname = path.resolve();
-//     app.use(express.static(path.join(__dirname, '/frontend/build')));
+const __dirname = path.resolve();
+    app.use(express.static(path.join(__dirname, '/Frontend/build')));
 
-//     app.get('/*', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
-// });
+    app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Frontend', 'build', 'index.html'));
+});
 
 
 //Deployment Code ends in productions=====================
