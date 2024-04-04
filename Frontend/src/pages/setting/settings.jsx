@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 const Setting = () => {
   // const id="65ed7bada708ba186741f4af";
   const authUser= useSelector((state) => state?.currentUser[0]?.user) || [];
+  console.log(authUser);
   const { tokens } = useTheme();
   return (
     <>
