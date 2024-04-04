@@ -1,7 +1,7 @@
 import { useState,useEffect } from 'react';
 import { BASE_URL} from '../config';
 import { useSelector } from 'react-redux';
-
+//import axios from 'axios';
 const useFetchData = (url) => {
     const userToken=useSelector((state)=>state?.currentUser[0]?.token);
     const [resultData,setData]=useState();
@@ -15,15 +15,16 @@ const useFetchData = (url) => {
                 const res=await fetch(`${BASE_URL}/${url}`
                 ,{
                  headers:{
-                        Authorization:`Bearer ${userToken}`
+                     Authorization:`Bearer ${userToken}`,
+                    'Content-Type': 'application/json'
                     }
                 }
                 )
                 const result= await res.json();
                 if(!res.ok){
-                   throw new Error(result.message);
+                   throw new Error(res.message);
                 }
-                // console.log(result);
+                 console.log(result);
                 setData(result);
                 setloader(false);
                 

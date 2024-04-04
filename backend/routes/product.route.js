@@ -12,7 +12,7 @@ const router = express.Router();
 
 //Products routes starts here============================
 router.get('/test', test);
-router.get('/productlist',verifyToken,getAllProducts);
+router.get('/productlist',getAllProducts);
 router.get('/:id',verifyToken,getProduct);
 router.post('/new-product',verifyToken,createProduct);
 router.patch('/update/:id',verifyToken,updateProduct);

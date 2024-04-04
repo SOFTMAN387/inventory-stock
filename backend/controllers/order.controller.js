@@ -101,7 +101,7 @@ export const getAllOrders=async(req,res)=>{
    return res.status(200).json({msg:"Order Found Successful",findAllOrders});
     }
   } catch (error) {
-   return res.status(500).json(err);
+   return res.status(500).json(error);
   }
 }
 

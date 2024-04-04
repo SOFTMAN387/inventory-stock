@@ -2,6 +2,7 @@
   "name": "amplify-ui-dashboard",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@aws-amplify/ui-react": "^5.2.0",
     "@emailjs/browser": "^4.3.3",

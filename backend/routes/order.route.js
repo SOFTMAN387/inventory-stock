@@ -13,7 +13,7 @@ const router = express.Router();
 
 //Orders routes starts here============================
 router.get('/test', test);
-router.get('/orderlist',verifyToken,getAllOrders);
+router.get('/orderlist',getAllOrders);
 router.get('/:id',verifyToken,getOrder);
 router.post('/new-order',verifyToken,createOrder);
 router.patch('/update/:id',verifyToken,updateOrder);
