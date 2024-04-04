@@ -51,7 +51,7 @@ app.use('/api/order', orderRoutes);
 //Deployment Code ends in productions=====================
 
 
-app.get("/",(req,res)=>{
+app.get("/test",(req,res)=>{
   res.send("Api is running successfully!....");
  });
 
