@@ -17,8 +17,7 @@ cloudinary.config({
   api_key:process.env.CLOUDINARY_API_KEY, 
   api_secret:process.env.CLOUDINARY_API_SECRET 
 });
-const port=8000;
-const __dirname = path.resolve();  
+const port=process.env.PORT||5000;
 const app = express();
 
 const corsOptons={
@@ -32,28 +31,30 @@ app.use(express.json());
 app.use(cookieParser());
 
 
-
-
-
-
 app.use('/api/user', userRoutes);
 app.use('/api/product', productRoutes);
 app.use('/api/order', orderRoutes);
 // app.use('/api/auth', authRoutes);
 
 //Deployment Code starts in For MERN STACK productions=====================
-    app.use(express.static(path.join(__dirname, './Frontend/build')));
-    app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'Frontend', 'build', 'index.html'));
-});
+    const __dirname = path.resolve();  
+    if(process.env.NODE_ENV==="production"){
+      app.use(express.static(path.join(__dirname, './Frontend/build')));
+      app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'Frontend', 'build', 'index.html'));
+    });
+    }else{
+      app.get("/",(req,res)=>{
+        res.send("Api is Running........");
+      })
+    }
+    
+    
 
 
 //Deployment Code ends in productions=====================
 
 
-app.get("/test",(req,res)=>{
-  res.send("Api is running successfully!....");
- });
 
 const startServer=async()=>{
   try {
